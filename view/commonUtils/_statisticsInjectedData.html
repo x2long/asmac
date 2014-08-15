@@ -1,0 +1,27 @@
+{/foreach from=$statistics_records key=k item=v/}
+{/if $k%2==0/}
+<tr class='even'>
+    {/else/}
+<tr class='odd'>
+    {//if/}
+    <td>{/$v.phone_number/}</td>
+    {/if $model->page_selector == 3/}
+    <td>{/$v.commit_time /}</td>
+    <td>{/$v.intercept_valid/}</td>
+    {/else/}
+    <td>{/$v.start_time /}</td>
+    <td>{/$v.end_time/}</td>
+    {//if/}
+    {/if $model->page_selector == 3/}
+    <td>{/$v.intercept_times/}</td>
+    {/else/}
+    <td>{/$v.call_times/}</td>
+    {//if/}
+    <td>{/$v.illegal_type/}</td>
+    {/if $model->page_selector == 3/}
+    <td>{/$v.reason_desc/}</td>
+    {/else/}
+    <td>{/$v.sus_type_desc/}</td>
+    {//if/}
+</tr>
+{//foreach/}

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>test</title>
+    <script type="text/javascript">
+        var count = parseInt("${ count }");//从后台action中获取总记录数
+        var currentPage = parseInt("${ currentPage }") + 1;
+        var countPerPage = 10;
+        var showLowerBound = count == 0 ? 0 : (currentPage - 1) * countPerPage + 1;
+        var showUpperBound = count > currentPage * countPerPage ? currentPage
+                * countPerPage : count;
+        var totalPage = parseInt((count + countPerPage - 1) / countPerPage);
+        $(function() {
+            $("#operTimeBegin").datepicker({
+                dateFormat : 'yy-mm-dd'
+            });
+            $("#operTimeEnd").datepicker({
+                dateFormat : 'yy-mm-dd'
+            });
+            var param = "loginName=<s:property value='loginName' />&"
+                    +"operModule=<s:property value='operModule' />&"
+                    +"operDesc=<s:property value='operDesc' />&"
+                    +"operateType=<s:property value='operateType' />&"
+                    +"operTimeBegin=<s:property value='operTimeBegin' />&"
+                    +"operTimeEnd=<s:property value='operTimeEnd' />&";
+            if (totalPage > 1) {
+                pageNav.url = "<s:url value='/operate-logs'/>" + '?' + param;
+                pageNav.pre = "上一页";
+                pageNav.next = "下一页";
+                pageNav.go(currentPage, totalPage);//共totalPage页
+            }
+            $('#tableInfo').html(
+                    "当前范围：" + showLowerBound + "~" + showUpperBound + "/ 共" + count
+                            + "条数据");
+        });
+
+        function check() {
+            var operTimeBegin = $("#operTimeBegin").val();
+            var operTimeEnd = $("#operTimeEnd").val();
+            if ((operTimeBegin == "" && operTimeEnd != "")
+                    || (operTimeBegin != "" && operTimeEnd == "")) {
+                alert("操作起始时间作为查询条件，需要成对录入!");
+                return false;
+            }
+            if (operTimeBegin > operTimeEnd) {
+                alert("操作结束时间不应早于开始时间!");
+                return false;
+            }
+            $("#search-form").submit();
+        }
+
+        function rest() {
+            $("#loginName").val("");
+            $("#operModule").val("");
+            $("#operDesc").val("");
+            $("#operateType").val("");
+            $("#operTimeBegin").val("");
+            $("#operTimeEnd").val("");
+        }
+
+        function confirmDelete(){
+            var msg = "您确认删除历史日志数据?\n系统将默认删除30天前的所有日志数据，请谨慎操作。\n如需修改日志保留期限，请进入配置管理界面。";
+            if (confirm(msg)==true){
+                $("#delete").hide();
+                var url = "<s:url value='/operate-logs'/>!destroy.json";
+                $.get(url,{},
+                        function(json){
+                            if(json.info>=0){
+                                alert("清除历史日志数据成功！\n共清除[" + json.info + "]条数据。");
+                            }else{
+                                alert("清除历史日志数据失败！");
+                            }
+                            rest();
+                            $("#search-form").submit();
+                        });
+            }
+        }
+
+    </script>
+</head>
+<body>
+各种按钮的组合情况
+<div class="btn-container" style="margin-left: 10px" >
+    <a class="btn-add" onclick="confirmAttach();">add关联所选</a>
+    <a class="btn-del" onclick="confirmAttach();">del关联所选</a>
+    <a class="btn-cancel" onclick="confirmAttach();">cancel关联所选</a>
+    <a class="btn-search" onclick="confirmAttach();">search关联所选</a>
+    <a class="btn-sms" onclick="confirmAttach();">sms关联所选</a>
+    <a class="btn-download" onclick="confirmAttach();">download关联所选</a>
+    <a class="btn-save" onclick="confirmAttach();">save关联所选</a>
+    <a class="btn-next" onclick="confirmAttach();">next关联所选</a>
+    <a class="btn-prev" onclick="confirmAttach();">prev关联所选</a>
+    <a class="btn-export" onclick="confirmAttach();">export关联所选</a>
+    <a class="btn-play" onclick="confirmAttach();">play关联所选</a>
+</div>
+
+<th>选择策略:</th>
+<td><select id="kindsType" name="kindsType" class="ipt-s">
+    <option selected value="-1">--请选择--</option>
+    <option value='3'>公检法</option>
+    <option value='4'>特服</option>
+    <option value='2'>110尾号</option>
+    <option value='1'>公众举报</option>
+    <option value='all'>全部</option>
+</select></td>
+{/elseif $model->page_selector == 2/}
+<th>选择类型:</th>
+<td><select id="kindsType" name="kindsType" class="ipt-s">
+    <option selected value="-1">--请选择--</option>
+    <option value='fraud'>诈骗号码</option>
+    <option value='normal'>正常号码</option>
+    <option value='nandf'>正常+诈骗号码</option>
+    <option value='not'>未确认</option>
+    <option value='all'>全部</option>
+</select></td>
+<hr>
+复选框的使用案例
+<th class="check">
+    <input type="checkbox" onclick="listToggleAll($(this));"/>&nbsp;&nbsp;&nbsp;
+</th>
+<td class="check">
+    <input type="checkbox" name="ids" value ='<s:property value="#asset.id"/>'>
+</td>
+
+
+<form action="{/ $base_url /}/library/search" method="get" class="searchbox">
+    <input style="display:none;" type="text" name='strategy' id='strategy' class="ipt-s" value="" />
+    <input type="text" name="searchContent" id="12" placeholder="添加备注信息" style="color: #999;">
+</form>
+</body>
+</html>

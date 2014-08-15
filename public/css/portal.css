@@ -1,0 +1,15 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0;padding:0;font-size:12px;font-family:Arial,Helvetica,微软雅黑,宋体;color:#444;line-height:17px;}
+ol,ul{list-style: none;}
+body{background: url("../images/portal/bg_select_system.jpg") center top no-repeat #361d31;padding-top: 100px;}
+#main{width: 1300px;margin: 0 auto;text-align: center;}
+.select-sys{background: url("../images/portal/bg_select_system_panel.png");width: 330px;height: 425px;display: inline-block; *display:inline; zoom:1; margin: 0 20px;text-align: left;}
+#resousePool .button{width: 233px; height: 43px;display: block; background: url("../images/portal/btn_sys1.png");margin: 56px auto; cursor: pointer;}
+#bsm .button{width: 233px; height: 43px; display: block; background: url("../images/portal/btn_sys2.png");margin: 56px auto; cursor: pointer;}
+#oms .button{width: 233px; height: 43px; display: block; background: url("../images/portal/btn_sys3.png");margin: 56px auto; cursor: pointer;}
+.select-sys .info{height: 140px;padding: 0 34px;font-size: 14px; line-height: 20px; color: #555;margin-bottom:20px;}
+.select-sys .feature{background: url("../images/portal/bg_sys_features.png") no-repeat;width: 297px; height: 81px;text-align: center;margin: 0 auto;}
+.select-sys .feature li{width: 81px;height: 81px; text-align: center; display: inline-block;margin: 0 7px; vertical-align: top; font-size: 16px;line-height: 80px; *display:inline; zoom:1;}
+.select-sys .feature .row2{line-height: 18px;padding-top: 21px;font-size:14px;}
+.f1{color: #5a7474;}
+.f2{color: #93828f;}
+.f3{color: #6a707b;}

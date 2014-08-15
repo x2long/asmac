@@ -1,0 +1,44 @@
+<head>
+<script type="text/javascript">
+    var count = parseInt("{/$model->totalNum/}");//从后台获取总记录数
+    //var currentPage = parseInt(( $(".cPageNum").html()==null ? 0 :  $(".cPageNum").html())) + 1;
+    var currentPage = parseInt("{/$model->currentPage/}") + 1;
+    var countPerPage = parseInt("{/$model->countPerPage/}");
+    var showLowerBound= count==0 ? 0:(currentPage-1)*countPerPage+1;
+    var showUpperBound= count>currentPage*countPerPage? currentPage*countPerPage:count;
+    var totalPage = parseInt((count + countPerPage - 1) / countPerPage);
+    $(function() {
+        var params = "tabNum={/$params.tabNum/}"
+                +"&kindsType={/$params.kindsType/}"
+                +"&partName={/$params.partName/}"
+                +"&operTimeBegin={/$params.operTimeBegin/}"
+                +"&operTimeEnd={/$params.operTimeEnd/}"+"&";
+        if(totalPage>1){
+            pageNavForAjax.url = "{/$base_url/}/commonUtils/getStatisticsInjectedData"+ '?' + params;
+            pageNavForAjax.pre = "上一页";
+            pageNavForAjax.next = "下一页";
+            pageNavForAjax.go(currentPage, totalPage,"#intervalDataBody");//共totalPage页
+        }
+        $('#tableInfo').html("当前范围："+showLowerBound+"~"+showUpperBound+"/ 共"+count+"条数据");
+        var errorMsg="";
+        if(errorMsg!=""){
+            alert(decodeURI(decodeURI(errorMsg)));
+        }
+        $('a#ajaxAttrProps').attr("totalPage",totalPage);
+        $('a#ajaxAttrProps').attr("count",count);
+        injectTableData();
+    });
+
+    function injectTableData(){
+        var params = "tabNum={/$params.tabNum/}"
+                +"&kindsType={/$params.kindsType/}"
+                +"&partName={/$params.partName/}"
+                +"&operTimeBegin={/$params.operTimeBegin/}"
+                +"&operTimeEnd={/$params.operTimeEnd/}";
+        $.getJSON("{/$base_url/}/commonUtils/getStatisticsInjectedData?"+params, function(result){
+            $("#intervalDataBody").html("");
+            $("#intervalDataBody").html(result);
+        });
+    }
+</script>
+</head>

@@ -1,0 +1,18 @@
+{/foreach from=$suspect_records key=k item=v/}
+{/if $k%2==0/}
+<tr class='even'>
+    {/else/}
+<tr class='odd'>
+    {//if/}
+    <td>{/$v.phone_number/}</td>
+    <td>{/$v.start_time /}</td>
+    <td>{/$v.end_time/}</td>
+    <td>{/$v.call_times/}</td>
+    <td id="numstate-{/$v.stream_number/}">{/$v.num_state/}</td>
+    <td id="illegalType-{/$v.stream_number/}">{/$v.illegal_type/}</td>
+    <td>
+        <a class="opt-edit opt" href="javascript:auditionRecord('{/$v.stream_number/}')" title="编辑">试听</a>
+    </td>
+    <td id="notesFor-{/$v.stream_number/}">{/$v.susdesc/}</td>
+</tr>
+{//foreach/}

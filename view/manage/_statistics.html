@@ -1,0 +1,275 @@
+<head>
+    <script type="text/javascript">
+        var count = parseInt("{/$model->totalNum/}");//从后台获取总记录数
+        var currentPage = parseInt(( $(".cPageNum").html()==null ? 0 :  $(".cPageNum").html())) + 1;
+        var countPerPage = 10;
+        var showLowerBound= count==0? 0:(currentPage-1)*countPerPage+1;
+        var showUpperBound= count>currentPage*countPerPage? currentPage*countPerPage:count;
+        var totalPage = parseInt((count + countPerPage - 1) / countPerPage);
+        $(function() {
+            if(totalPage>1){
+                pageNavForAjax.url = "{/$base_url/}/manage/getIntervalData";
+                pageNavForAjax.pre = "上一页";
+                pageNavForAjax.next = "下一页";
+                pageNavForAjax.go(currentPage, totalPage,"#intervalDataBody");//共totalPage页
+            }
+            $('#tableInfo').html("当前范围："+showLowerBound+"~"+showUpperBound+"/ 共"+count+"条数据");
+            var errorMsg="";
+            if(errorMsg!=""){
+                alert(decodeURI(decodeURI(errorMsg)));
+            }
+            $('a#ajaxAttrProps').attr("totalPage",totalPage);
+        });
+
+        function check() {
+            var operTimeBegin = $("#operTimeBegin").val();
+            var operTimeEnd = $("#operTimeEnd").val();
+            if ((operTimeBegin == "" && operTimeEnd != "")
+                    || (operTimeBegin != "" && operTimeEnd == "")) {
+                alert("操作起始时间作为查询条件，需要成对录入!");
+                return false;
+            }
+            if (operTimeBegin > operTimeEnd) {
+                alert("操作结束时间不应早于开始时间!");
+                return false;
+            }
+            $("#search-form").submit();
+        }
+
+        function rest() {
+            $("#loginName").val("");
+            $("#operModule").val("");
+            $("#operDesc").val("");
+            $("#operateType").val("");
+            $("#operTimeBegin").val("");
+            $("#operTimeEnd").val("");
+        }
+
+        function confirmDelete(){
+            var msg = "您确认删除历史日志数据?\n系统将默认删除30天前的所有日志数据，请谨慎操作。\n如需修改日志保留期限，请进入配置管理界面。";
+            if (confirm(msg)==true){
+                $("#delete").hide();
+                var url = "";
+                $.get(url,{},
+                        function(json){
+                            if(json.info>=0){
+                                alert("清除历史日志数据成功！\n共清除[" + json.info + "]条数据。");
+                            }else{
+                                alert("清除历史日志数据失败！");
+                            }
+                            rest();
+                            $("#search-form").submit();
+                        });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#strategyAnalysePie').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Browser market shares at a specific website, 2010'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        },
+                        events: {
+                            click: function(){
+                                alert ('name: '+ this.name +', value: '+ this.value);
+                                appendThedata();
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Browser share',
+                    data: [
+                        ['Firefox',   45.0],
+                        ['IE',       26.8],
+                        {
+                            name: 'Chrome',
+                            y: 12.8,
+                            sliced: true,
+                            selected: true
+                        },
+                        ['Safari',    8.5],
+                        ['Opera',     6.2],
+                        ['Others',   0.7]
+                    ]
+                }]
+            });
+            $('#strategyAnalyseColumn').highcharts({
+                chart: {
+                    type: 'column',
+                    events: {
+                        click: function(){
+                            alert ('Category: '+ this.category +', value: '+ this.y);
+                            appendThedata();
+                        }
+                    }
+                },
+                title: {
+                    text: 'Monthly Average Rainfall'
+                },
+                subtitle: {
+                    text: 'Source: WorldClimate.com'
+                },
+                xAxis: {
+                    categories: [
+                        'Jan',
+                        'Feb',
+                        'Mar',
+                        'Apr',
+                        'May',
+                        'Jun'
+                    ]
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Rainfall (mm)'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    series: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    },
+                    events: {
+                        click: function(){
+                            alert ('Category: '+ this.category +', value: '+ this.y);
+                            appendThedata();
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Tokyo',
+                    data: [{
+                        name: 'Point 1',
+                        color: '#00FF00',
+                        y: 49.9,
+                        events:{
+                            click: function() {
+                                alert ('Category: '+ this.category +', value: '+ this.y);
+                            }
+                        }
+                    },
+                        71.5, 106.4, 129.2, 144.0, 176.0]
+
+                }, {
+                    name: 'New York',
+                    data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5]
+
+                }, {
+                    name: 'London',
+                    data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.32]
+
+                }, {
+                    name: 'Berlin',
+                    data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5]
+
+                }]
+            });
+        });
+
+        function appendThedata(){
+            $.getJSON("{/$base_url/}/manage/getIntervalData", function(result){
+                $("#intervalDataBody").html(result);
+            });
+        }
+    </script>
+</head>
+<div  class="main-unit" style="min-height: 30%">
+    <div class="header">
+        <span>按策略分析信息总览||确认信息总览||拦截信息总览</span>
+    </div>
+    <div class="unit-container" style="width:69%;float:left">
+        <div class="hintmsg">[说明]&nbsp;所有查询条件，均支持模糊查询，输入部分关键字即可。</div>
+        <form id='search-form' action="" method='get'>
+            <table class="table-2col uniform-style">
+                <tr>
+                    <th>查看类型:</th>
+                    <td><select id="operateType" name="operateType" class="ipt-s">
+                        <option selected value="-1">--请选择--</option>
+                        <option value='all'>ALL</option>
+                        <option value='yes'>YES</option>
+                        <option value='no'>NO</option>
+                    </select></td>
+                    <th>起始时间:</th>
+                    <td colspan="4">
+                        <input class="ipt-s" id="operTimeBegin" name="operTimeBegin" value="" />
+                        <a>&nbsp—&nbsp&nbsp</a>
+                        <input class="ipt-s" id="operTimeEnd" name="operTimeEnd" value="" />
+                    </td>
+                </tr>
+            </table>
+            <center>
+                <div class="btn-container" style="width: 400px">
+                    <a class="btn-save" onclick="check()">查询</a>
+                    <a class="btn-save" onclick="rest()">重置</a>
+                    <a id="delete" class="btn-del" onclick="confirmDelete()">清除历史数据</a>
+                </div>
+            </center>
+        </form>
+    </div>
+    <div id="strategyAnalysePie"  align="center" style="width:40%;height:60%;float:left;margin:0 5%">
+        The chart will appear within this DIV. This text will be replaced by the chart.
+    </div>
+    <div id="strategyAnalyseColumn"  align="center" style="width:40%;height:60%;float:left;margin:0 5%">
+        The chart will appear within this DIV. This text will be replaced by the chart.
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div  class="main-unit" style="min-height: 10%">
+    <div class="header">
+        <span>明细信息总览</span>
+    </div>
+    <div class="unit-container" style="width:99%;float:left">
+        <table id="detail-table" class="table-complex table-imgbtn highlight">
+            <thead>
+            <tr>
+                <th>主叫号码</th>
+                <th>呼叫开始时间</th>
+                <th>呼叫结束时间</th>
+                <th>呼叫次数</th>
+                <th>状态</th>
+                <th>审核结果</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="intervalDataBody"></tbody>
+        </table>
+        <div style="width: 95%; height: 30px" >
+            <div id="tableInfo" class="normal_info" style="height: 30px; position: absolute; left: 30px"></div>
+            <!-- 分页实现 -->
+            <div id="pageNavForAjax" style="position: absolute; right: 25px"></div>
+            <!-- 分页实现 -->
+            <a style="display:none;" id= "ajaxAttrProps" totalPage="6" countPerPage="10"></a>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div style="clear:both"></div>

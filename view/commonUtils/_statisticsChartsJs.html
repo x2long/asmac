@@ -1,0 +1,115 @@
+<script type="text/javascript">
+    function createPie(){
+        Highcharts.getOptions().plotOptions.pie.colors = Highcharts.map(Highcharts.getOptions().colors, function(color) {
+            return {
+                radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
+        $('#strategyAnalysePie').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: "{/$charData.charName[0]/}"
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    },
+                    events: {
+                        click: function(e){
+                            //alert(e.point.name+"xxl"+e.point.y);
+                            showGridsTable({/$params.tabNum/},"{/$params.kindsType/}",e.point.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/});
+                            //showGridsTable({/$params.tabNum/},"name",e.point.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/});
+                        }
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: "{/$charData.seriesName[0]/}",
+                data: [
+                    {/foreach from=$charData.data.pie key=k item=v/}
+                    ["{/$k/}",  {/$v/}],
+        {//foreach/}
+        ]
+        }]
+    });
+    }
+
+    function createColumn(){
+        $('#strategyAnalyseColumn').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: "{/$charData.charName[1]/}"
+            },
+            subtitle: {
+                text: 'Source: www.ebupt.com'
+            },
+            xAxis: {
+                categories: [
+                    "该时段内"
+                ]
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '{/$charData.seriesName[1]/}'+'(次)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} 次</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column:{
+                    dataLabels:{
+                        enabled:false //是否显示数据标签
+                    },
+                    events: {
+                        click: function(e){
+                            // alert(e.point.series.name+"xxl"+e.point.y);
+                            //showGridsTable(tabNum,type,partName,operTimeBegin,operTimeEnd);
+                            showGridsTable({/$params.tabNum/},"{/$params.kindsType/}",e.point.series.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/});
+                        }
+                    }
+                },
+                series: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [
+                {/foreach from=$charData.data.column key=k item=v/}
+        {
+            name: "{/$k/}",
+                    data: [{/$v/}]
+
+    },
+    {//foreach/}
+    ]
+    });
+    }
+</script>

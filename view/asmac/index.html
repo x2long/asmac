@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <base href="{/$base_url/}/" />
+    <link href="public/css/portal.css" rel="stylesheet"
+          type="text/css" />
+    <title>{/$title/}</title>
+</head>
+<body>
+<div id="main">
+    <div class="select-sys" id="resousePool">
+        <a href="manage" class="button"></a>
+        <div class="info">
+            国际诈骗电话管理
+        </div>
+        <ul class="feature">
+            <li class="f1 row2">特色1<br />详细
+            </li>
+            <li class="f2 row2">特色2<br />描述
+            </li>
+            <li class="f3">特色3</li>
+        </ul>
+    </div>
+    <div class="select-sys" id="bsm">
+        {/if $model->username =="admin"/}
+        <a href="site/create" class="button"></a>
+        {/else/}
+        <a href="asmac/others" class="button"></a>
+        {//if/}
+        <div class="info">
+            网站其他功能的展示，可以随意
+        </div>
+        <ul class="feature">
+            <li class="f1 row2">特色1<br />详细
+            </li>
+            <li class="f2 row2">特色2<br />描述
+            </li>
+            <li class="f3">特色3</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
