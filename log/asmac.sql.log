@@ -1,0 +1,4 @@
+2014/08/15 09:57:49 [trace] [system.db.CDbConnection] Opening DB connection
+in /Users/xlxu/Documents/EB-projects/codes/asmac/lib/activeRecord/LoginUserAr.php (31)
+in /Users/xlxu/Documents/EB-projects/codes/asmac/protected/models/LoginUserHelper.php (14)
+in /Users/xlxu/Documents/EB-projects/codes/asmac/protected/components/UserIdentity.php (18)
