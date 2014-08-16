@@ -13,7 +13,10 @@ class CommonUtilsController extends EbuptController{
         $stream_number = $_GET["streamNumber"];
         $susdesc = $_GET["notes"];
         $sus_record = SerInterDbtBlackAr::model()->find('stream_number = '.$stream_number);
-        $sus_record ->susdesc = iconv("UTF-8","GBK",$susdesc);
+        $environment = Yii::app()->params['environment'];
+        if($environment != "develop"){
+            $sus_record ->susdesc = iconv("UTF-8","GBK//ignore",$susdesc);
+        }
         $result = $sus_record->save() ? "true" : "false";
         return $this->renderJson($result);
     }
@@ -88,7 +91,10 @@ class CommonUtilsController extends EbuptController{
             $confirm_record->illegal_reason=$reasons[$type];
             $mapSperPho = MapSpePhoneAr::model()->find('phone = "'.$pho_num.'"');
             $reason_desc= empty($mapSperPho) ? $sus_record->spe_phone_desc.$sus_record->susdesc : $mapSperPho->name;
-            $confirm_record->reason_desc= iconv("UTF-8","GBK",$reason_desc);
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $confirm_record->reason_desc= iconv("UTF-8","GBK//ignore",$reason_desc);
+            }
             $saved= ($confirm_record->save()&& $saved) ? "true" : "false";
         }
         $status = AsmacConstants::get_phoNum_status($sus_record->num_state,$sus_record->ensure_time);
@@ -116,13 +122,18 @@ class CommonUtilsController extends EbuptController{
     public function actionGetIntervalData(){
         $helper = new SerInterDbtblackHelper();
         $suspect_records =$helper->get_newest_suspected_records();
-        $encode = mb_detect_encoding($suspect_records, array('GB2312','GBK','UTF-8'));
+        $environment = Yii::app()->params['environment'];
+        if($environment != "develop"){
+            $encode = mb_detect_encoding($suspect_records, array('GB2312','GBK','UTF-8'));
+        }
         foreach($suspect_records as $item){
-            $susdesc = '';
             $status = AsmacConstants::get_phoNum_status($item->num_state,$item->ensure_time);
             $result = AsmacConstants::get_phoNum_audit_result($item->num_state,$item->illegal_type);
-            $susdesc .= $item->susdesc;
-            $item->susdesc = AsmacConstants::encode2utf8($encode,$susdesc);
+            if($environment != "develop"){
+                $susdesc = '';
+                $susdesc .= $item->susdesc;
+                $item->susdesc = AsmacConstants::encode2utf8($encode,$susdesc);
+            }
             $item->num_state = $status;
             $item->illegal_type = $result;
             $item->start_time=date("Y-m-d H:i:s.000",strtotime($item->start_time));
@@ -154,11 +165,16 @@ class CommonUtilsController extends EbuptController{
         if($offset<0) $offset = 0;
         $statistics_records =AsmacConstants::get_grids_data_by_conditions($countPerPage,$offset,true);
         if($statistics_records!==false){
-            $encode = mb_detect_encoding($statistics_records, array('GB2312','GBK','UTF-8'));
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $encode = mb_detect_encoding($statistics_records, array('GB2312','GBK','UTF-8'));
+            }
             foreach($statistics_records as $item){
                 if($tabNum==3){
-                    $reason_desc = ''.$item->reason_desc;
-                    $item->reason_desc = AsmacConstants::encode2utf8($encode,$reason_desc);
+                    if($environment != "develop"){
+                        $reason_desc = ''.$item->reason_desc;
+                        $item->reason_desc = AsmacConstants::encode2utf8($encode,$reason_desc);
+                    }
                     $item->illegal_type = SerInterBlackHelper::get_illegal_type($item->illegal_type);
                     $item->illegal_reason = SerInterBlackHelper::get_illegal_reason($item->illegal_reason);
                     $item->commit_time=date("Y-m-d H:i:s.000",strtotime($item->commit_time));
@@ -167,8 +183,10 @@ class CommonUtilsController extends EbuptController{
                 }else{
                     $illegal_type = AsmacConstants::get_phoNum_audit_result($item->num_state,$item->illegal_type);
                     $item->illegal_type = $illegal_type;
-                    $sus_type_desc = ''.$item->sus_type_desc;
-                    $item->sus_type_desc = AsmacConstants::encode2utf8($encode,$sus_type_desc);
+                    if($environment != "develop"){
+                        $sus_type_desc = ''.$item->sus_type_desc;
+                        $item->sus_type_desc = AsmacConstants::encode2utf8($encode,$sus_type_desc);
+                    }
                     $item->start_time=date("Y-m-d H:i:s.000",strtotime($item->start_time));
                     $item->end_time=date("Y-m-d H:i:s.000",strtotime($item->end_time));
                 }
@@ -277,7 +295,10 @@ class CommonUtilsController extends EbuptController{
         $serInterDbt->illegal_type=1;
         $serInterDbt->call_times=1;
         $serInterDbt->last_called=$phone_number;
-        $serInterDbt->susdesc=iconv("UTF-8","GBK","来源于客户投诉");
+        $environment = Yii::app()->params['environment'];
+        if($environment != "develop"){
+            $serInterDbt->susdesc=iconv("UTF-8","GBK//ignore","来源于客户投诉");
+        }
         $serInterDbt->actperiod=1;
         $serInterDbt->act_type=99;
         $serInterDbt->fe_id=256;

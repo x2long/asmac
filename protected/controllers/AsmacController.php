@@ -39,7 +39,10 @@ class AsmacController extends EbuptController{
     public function actionCreate(){
         if(isset($_POST['strategy'])){
             $strategy = trim($_POST['strategy']);
-            $desc = $value = iconv('UTF-8','GBK//ignore',trim($_POST['desc']));
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $desc = iconv('UTF-8','GBK//ignore',trim($_POST['desc']));
+            }
             $value = trim($_POST['value']);
             $stratety_records = CfgItrStrategyAr::model()->find('strategy ='.$strategy);
             $stratety_records->value = $value;
@@ -61,10 +64,15 @@ class AsmacController extends EbuptController{
         $covertArray = array("高频违规","公众举报","110尾号","公检法号码","特服尾号");
         $model->username=Yii::app()->user->name;
         $stratety_records = CfgItrStrategyAr::model()->findAll();
-        $encode = mb_detect_encoding($stratety_records, array('GB2312','GBK','UTF-8'));
+        $environment = Yii::app()->params['environment'];
+        if($environment != "develop"){
+            $encode = mb_detect_encoding($stratety_records, array('GB2312','GBK','UTF-8'));
+        }
         foreach($stratety_records as $item){
-            $desc = ''.$item->desc;
-            $item->desc = AsmacConstants::encode2utf8($encode,$desc);
+            if($environment != "develop"){
+                $desc = ''.$item->desc;
+                $item->desc = AsmacConstants::encode2utf8($encode,$desc);
+            }
         }
         $this->renderSmarty('asmac/create.html',array('model'=>$model,"stratety_records"=>$stratety_records,'array'=>$covertArray));
     }
@@ -92,11 +100,16 @@ class AsmacController extends EbuptController{
         $strategy_record->phone=$phone;
         $strategy_record->phone_type=intval($phone_type);
 
-        $strategy_record->name=iconv("UTF-8","GBK",$name);
-
-        $strategy_record->province=iconv("UTF-8","GBK",$province);
-
-        $strategy_record->city=iconv("UTF-8","GBK",$city);
+        $environment = Yii::app()->params['environment'];
+        if($environment != "develop"){
+            $strategy_record->name=iconv("UTF-8","GBK",$name);
+            $strategy_record->province=iconv("UTF-8","GBK",$province);
+            $strategy_record->city=iconv("UTF-8","GBK",$city);
+        }else{
+            $strategy_record->name=$name;
+            $strategy_record->province=$province;
+            $strategy_record->city=$city;
+        }
 
         //match_type need confirm
         $strategy_record->match_type = $strategy_record->phone_type ===1 ? 0 : -1 ;//need change
@@ -177,15 +190,20 @@ class AsmacController extends EbuptController{
         $offset = ($countPerPage)*$currentPage;
         if($offset<0) $offset = 0;
         $strategy_records =$helper->get_records_by_conditions($countPerPage,$offset,true);
-        if($strategy_records !== false){
-            $encode = mb_detect_encoding($strategy_records, array('GB2312','GBK','UTF-8'));
+        if($strategy_records != false){
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $encode = mb_detect_encoding($strategy_records, array('GB2312','GBK','UTF-8'));
+            }
             foreach($strategy_records as $item){
-                $name = $item->name;
-                $item->name = AsmacConstants::encode2utf8($encode,$name);
-                $province = $item->province;
-                $item->province = AsmacConstants::encode2utf8($encode,$province);
-                $city = $item->city;
-                $item->city= AsmacConstants::encode2utf8($encode,$city);
+                if($environment != "develop"){
+                    $name = $item->name;
+                    $item->name = AsmacConstants::encode2utf8($encode,$name);
+                    $province = $item->province;
+                    $item->province = AsmacConstants::encode2utf8($encode,$province);
+                    $city = $item->city;
+                    $item->city= AsmacConstants::encode2utf8($encode,$city);
+                }
                 $type_array=array("高频违规","公众举报","110尾号","公检法号码","特服尾号");
                 $item->phone_type = $type_array[$item->phone_type ];
             }
@@ -254,9 +272,16 @@ class AsmacController extends EbuptController{
                         $excelData[] = $objReader->sheets[0]['cells'][$row][$col];
                     }
                 }
-                $mapSpePhone->city=iconv("UTF-8","GBK",$excelData[4]);
-                $mapSpePhone->name=iconv("UTF-8","GBK",$excelData[2]);
-                $mapSpePhone->province=iconv("UTF-8","GBK",$excelData[3]);
+                $environment = Yii::app()->params['environment'];
+                if($environment != "develop"){
+                    $mapSpePhone->city=iconv("UTF-8","GBK",$excelData[4]);
+                    $mapSpePhone->name=iconv("UTF-8","GBK",$excelData[2]);
+                    $mapSpePhone->province=iconv("UTF-8","GBK",$excelData[3]);
+                }else{
+                    $mapSpePhone->city=$excelData[4];
+                    $mapSpePhone->name=$excelData[2];
+                    $mapSpePhone->province=$excelData[3];
+                }
                 $mapSpePhone->phone=$excelData[0];
                 $mapSpePhone->phone_type=intval($excelData[1]);
                 $mapSpePhone->match_type=1;//need change

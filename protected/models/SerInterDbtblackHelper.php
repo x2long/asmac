@@ -49,7 +49,7 @@ class SerInterDbtblackHelper extends SerInterDbtBlackAr{
      */
     public function get_suspected_records_by_conditions($num, $offset,$flag){
         try{
-            $sidx = 'call_times';
+            $sidx = 'last_recordtime';
             $sord = 'desc';
             $attribute = array(
                 'order' => $sidx." ".$sord, //order by book_id desc

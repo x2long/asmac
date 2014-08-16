@@ -81,7 +81,10 @@ class SiteController extends EbuptController
         if(isset($_POST['save']) && !empty($_POST['save'])){
             // no for
             $allvalues = $_POST;
-            $allvalues = AsmacConstants::iconv_array($allvalues);
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $allvalues = AsmacConstants::iconv_array($allvalues);
+            }
             for($i=0;$i<$number;$i++){
                 $instance->setAttributes($allvalues);
                 if(isset($allvalues["phone_number"])){

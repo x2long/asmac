@@ -37,7 +37,7 @@ create index idx_calltime on itf_recordlog (calltime)$$
 
 delimiter $$
 drop table if exists `ser_inter_dbtblack`$$
-create table ser_inter_dbtblack
+create table `ser_inter_dbtblack`
   (
     `stream_number` int(11) NOT NULL AUTO_INCREMENT ,
     `commit_time`  varchar(14) not null ,
@@ -56,6 +56,7 @@ create table ser_inter_dbtblack
     `actperiod` int(11) not null ,
     `act_type` smallint not null ,
     `fe_id` int(11) not null ,
+    `findsustimes` int(11) not null ,
     `ensure_time` char(14) default null ,
 	  `last_recordtime` char(14) default null ,
 	  `triger_area` char(6) default null ,

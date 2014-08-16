@@ -6,7 +6,7 @@
  */
 
 require_once(dirname(__FILE__).'/../thirdparty/Smarty-2.6.26/libs/Smarty.class.php');
-
+date_default_timezone_set('Asia/Shanghai');
 //smarty setting
 define('SMARTY_LIFTTIME', 1800);
 define('SMARTY_DLEFT', '{/');

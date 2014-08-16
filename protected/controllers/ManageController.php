@@ -50,14 +50,19 @@ class ManageController extends EbuptController
         }else{
             $suspect_records =$helper->get_suspected_records_by_conditions($countPerPage,$offset,true);
         }
-        if($suspect_records !== false){
-            $encode = mb_detect_encoding($suspect_records, array('GB2312','GBK','UTF-8'));
+        if($suspect_records != false){
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $encode = mb_detect_encoding($suspect_records, array('GB2312','GBK','UTF-8'));
+            }
             foreach($suspect_records as $item){
-                $susdesc = '';
                 $status = AsmacConstants::get_phoNum_status($item->num_state,$item->ensure_time);
                 $result = AsmacConstants::get_phoNum_audit_result($item->num_state,$item->illegal_type);
-                $susdesc .= $item->susdesc;
-                $item->susdesc = AsmacConstants::encode2utf8($encode,$susdesc);
+                if($environment != "develop"){
+                    $susdesc = '';
+                    $susdesc .= $item->susdesc;
+                    $item->susdesc = AsmacConstants::encode2utf8($encode,$susdesc);
+                }
                 $item->num_state = $status;
                 $item->illegal_type = $result;
                 $item->start_time=date("Y-m-d H:i:s.000",strtotime($item->start_time));
@@ -93,14 +98,19 @@ class ManageController extends EbuptController
         $offset = ($countPerPage)*$currentPage;
         if($offset<0) $offset = 0;
         $suspect_records =$helper->get_suspected_records_by_conditions($countPerPage,$offset,true);
-        if($suspect_records !== false){
-            $encode = mb_detect_encoding($suspect_records, array('GB2312','GBK','UTF-8'));
+        if($suspect_records != false){
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $encode = mb_detect_encoding($suspect_records, array('GB2312','GBK','UTF-8'));
+            }
             foreach($suspect_records as $item){
-                $susdesc = '';
                 $status = AsmacConstants::get_phoNum_status($item->num_state,$item->ensure_time);
                 $result = AsmacConstants::get_phoNum_audit_result($item->num_state,$item->illegal_type);
-                $susdesc .= $item->susdesc;
-                $item->susdesc = AsmacConstants::encode2utf8($encode,$susdesc);
+                if($environment != "develop"){
+                    $susdesc = '';
+                    $susdesc .= $item->susdesc;
+                    $item->susdesc = AsmacConstants::encode2utf8($encode,$susdesc);
+                }
                 $item->num_state = $status;
                 $item->illegal_type = $result;
                 $item->start_time=date("Y-m-d H:i:s.000",strtotime($item->start_time));
@@ -176,10 +186,15 @@ class ManageController extends EbuptController
         if($offset<0) $offset = 0;
         $confirmed_records =$helper->get_confirmed_records_by_conditions($countPerPage,$offset,true);
         if(!empty($confirmed_records)){
-            $encode = mb_detect_encoding($confirmed_records, array('GB2312','GBK','UTF-8'));
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $encode = mb_detect_encoding($confirmed_records[0]->reason_desc, array('GB2312','GBK','UTF-8'));
+            }
             foreach($confirmed_records as $item){
-                $reason_desc = ''.$item->reason_desc;
-                $item->reason_desc = AsmacConstants::encode2utf8($encode,$reason_desc);
+                if($environment != "develop"){
+                    $reason_desc = ''.$item->reason_desc;
+                    $item->reason_desc = AsmacConstants::encode2utf8($encode,$reason_desc);
+                }
                 $item->illegal_type = SerInterBlackHelper::get_illegal_type($item->illegal_type);
                 $item->illegal_reason = SerInterBlackHelper::get_illegal_reason($item->illegal_reason);
                 $item->commit_time=date("Y-m-d H:i:s.000",strtotime($item->commit_time));
