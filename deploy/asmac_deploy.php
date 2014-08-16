@@ -12,224 +12,68 @@
 
 // General Configuration
 //$repo = "https://69.164.199.119/fnx/repo1/trunk/game";
-$repo = "asmac/branches/localization/server";
-
-$extjsarchive="/data/ext-4.1.1a-gpl.zip";
-$extjsdir="ext-4.1.1a";
+$repo = "https://github.com/x2long/asmac.git";
 
 // Verify commandline usage
 $argv = $_SERVER['argv'];
 if( count( $argv ) < 3 )
 {
-	die( "USAGE: dev_deploy [username] [gamename] [use_graphics] [build number]\n" );
+	die( "USAGE: dev_deploy [temp_dir] [build_dir] \n
+	    temp_dir used for build temp files,and build_dir is asmac web dir" );
 }
 
-$player_name = $argv[1];
-$game_name = $argv[2];
+$temp_build_path = "/home/webser/asmac_temp_build";
+$release_path = "/home/webser/wwwroot/asmac";
 
-$use_graphics = true;
-$build_number = false;
+$temp_build_path = $argv[1];
+$release_path = $argv[2];
 
-if( isset( $argv[3] ) && $argv[3]=='false' )
+if( file_exists( "$temp_build_path" ) )
 {
-        $use_graphics = false;
-}
-
-
-if( isset( $argv[4] ) )
-{
-	$build_number = $argv[4];
-}
-
-$app_names = GetAppNames();
-
-echo "\n";	// To make later output easier to distinguish
-
-
-// Verify valid options
-if( !in_array( $game_name, $app_names ) )
-{
-	$err = "Invalid app name - you probably mistyped the game name: $game_name.\nAvailable names:\n";
-	foreach( $app_names as $key )
-	{
-		$err .= "  $key\n";
-	}
-	$err .= "\n";
-	die( $err );
-}
-
-if( $build_number !== false && !is_numeric( $build_number ) )
-{
-	die( "We'll need the numeric build number you want to build.\n" );
-}
-
-if( !file_exists( "/home/$player_name/" ) )
-{
-	die( "The user $player_name does not have a home directory, it seems.  Aborting dev deploy.\n" );
+	die( "The user $temp_build_path already exist, do rm it.  Aborting dev deploy.\n" );
 }
 
 // Get the current revision number
-$handle = popen( "svn info $repo", "r" );
+$handle = popen( "git --version", "r" );
 while( $line = fgets( $handle ) )
 {
-	if( preg_match( '/Revision: (\d+)/', $line, $rev_matches ) )
+	if( preg_match( '/git version/', $line, $rev_matches ) )
 	{
-		$rev = (int)$rev_matches[1];
-		if( $rev <= 0 )
-		{
-			die( "Unable to retrieve the current build number from SVN.\n" );
-		}
+		$use_git = true ;
 		break;
 	}
 }
 pclose( $handle );
 
-if( $build_number === false )
+echo "Dowload code from git\n\n";
+if( $use_git === true )
 {
-	echo "No build number given.  Defaulting to the most current ( $rev ).\n\n";
-	$build_number = $rev;
-}
-
-// Configure our paths, etc.
-$graphics_path = "/home/$player_name/graphics_$game_name";
-$release_path = "/home/$player_name/builds/$game_name";
-
-// Remove the current build
-// Check for a valid override file
-$override_path = "/home/$player_name/overrides/override_$game_name.php";
-if( !file_exists( $override_path ) )
-{
-	die( "Cannot proceed with build - local dev override file '$override_path' doesn't exist.\n" );
-}
-
-if( file_exists( $release_path ) )
-{
-	echo "Now deleting existing build for $game_name...\n";
-	// Sadly, this is the cleanest way in PHP to remove a directory and its children
-	system( "rm -rf $release_path" );
-}
-
-echo "Now creating build for $build_number in '$release_path'\n\n";
-$temp_build_path = "/home/$player_name/temp_build/";
-
-// Remove the temp directory if it already exists
-if( file_exists( $temp_build_path ) )
-{
-	echo "Now deleting temporary build directory at $temp_build_path...\n";
-	// Sadly, this is the cleanest way in PHP to remove a directory and its children
-	system( "rm -rf $temp_build_path" );
-}
-
-//$build_path = "$release_path/builds/$game_name";
-$build_path = "$release_path/view";
-
-// Create the final build path
-echo "Creating '$build_path'\n";
-$status = mkdir( $build_path, 0777, true );
-if( $status !== true )
-{
-	die( "Unable to create directory '$build_path'.  Probably a permissions issue.\n" );
-}
-
-// Create the temporary build path
-echo "Creating '$temp_build_path'\n";
-$status = mkdir( $temp_build_path, 0777, true );
-if( $status !== true )
-{
-	die( "Unable to create directory '$temp_build_path'.  Probably a permissions issue.\n" );
-}
-
-// Non-merging directories can be exported directly to the destination path
-echo "Exporting plat...\n";
-system( "svn -r $build_number --quiet export $repo/plat $release_path/plat" );
-echo "Exporting util...\n";
-system( "svn -r $build_number --quiet export $repo/util $release_path/util" );
-echo "Exporting locale...\n";
-system( "svn -r $build_number --quiet export $repo/locale $release_path/locale" );
-echo "Exporting adm...\n";
-system( "svn -r $build_number --quiet export $repo/adm $release_path/adm" );
-system( "unzip $extjsarchive -d $release_path/adm" );
-system( "cd $release_path/adm ; ln -s $extjsdir extjs" );
-echo "Exporting pstats...\n";
-system( "svn -r $build_number --quiet export $repo/pstats $release_path/pstats" );
-echo "Exporting cron_scripts...\n";
-system( "svn -r $build_number --quiet export $repo/cron_scripts $release_path/cron_scripts" );
-echo "Exporting class...\n";
-system( "svn -r $build_number --quiet export $repo/apps/$game_name"."_class $release_path/class" );
-
-// Merging directories need to go to the temporary directory first
-echo "Exporting apps/base to temp...\n";
-system( "svn -r $build_number --quiet export $repo/apps/base $temp_build_path/apps/base" );
-echo "Exporting apps/$game_name"."_view to temp...\n";
-system( "svn -r $build_number --quiet export $repo/apps/$game_name"."_view $temp_build_path/apps/$game_name"."_view" );
-
-if ($use_graphics) {
-	if( file_exists( $graphics_path ) )
-	{
-	        echo "Now deleting temporary build directory at $graphics_path...\n";
-	        // Sadly, this is the cleanest way in PHP to remove a directory and its children
-	        system( "rm -rf $graphics_path" );
-	}
-
-
-	echo "Exporting apps/$game_name"."_view_graphics to temp...\n";
-	system( "svn -r $build_number --quiet export $repo/apps/$game_name"."_view_graphics/graphics $graphics_path" );
+	echo "Now use git to clone source!\n\n";
+	do_with_git($repo,$temp_build_path);
+}else{
+    echo "Now use wget to download codes!\n\n";
+    do_with_wget($repo,$temp_build_path);
 }
 
 // Merge the directories in turn by copying them into the build directory
-echo "Copying base to build...\n";
-MergeIfExists( "$temp_build_path/apps/base", $build_path );
+echo "Copying temp to build...\n";
+MergeIfExists( "$temp_build_path", $release_path );
 
-echo "Merging game to build...\n";
-MergeIfExists( "$temp_build_path/apps/$game_name"."_view", $build_path );
-
-//echo "Merging graphics to build...\n";
-//MergeIfExists( "$temp_build_path/apps/$game_name"."_view_graphics", $build_path );
-
-//echo "Merging social network to build...\n";
-//MergeIfExists( "$temp_build_path/apps/$game_name"."_class", $build_path );
-
-// Create the symlink for the build number pseudopath
-
-system( "ln -s $build_path $build_path/$build_number" );
-system( "ln -s $graphics_path $build_path/$build_number/graphics");
-
-// Copy the appropriate override file in
-system( "cp /home/$player_name/overrides/override_$game_name.php $release_path/class/conf/test_config.php" );
-
-// Create the build number include file
-$build_number_inc = fopen( "$release_path/class/conf/version", 'w' );
-if( $build_number_inc === false )
-{
-	die( "Unable to open build number include file '$build_path/version' for writing.  Probably a permissions issue.\n" );
-}
-
-$build_number_file_contents = '<? global $version_number; $version_number = ' . $build_number . '; ?>';
-
-fwrite( $build_number_inc, $build_number_file_contents );
-
-fclose( $build_number_inc );
 
 // Remove the temporary directory
 // Sadly, this is the cleanest way in PHP to remove a directory and its children
-system( "rm -rf $temp_build_path" );
+//system( "rm -rf $temp_build_path" );
 
 // Done!
-echo "\n\nComplete.\n$player_name's copy of $game_name ( build $build_number ) is now ready for use.\n\n";
+echo "\n\nComplete.\n $release_path is now ready for use.\n\n
 
-
-///////////////////Functions/////////////////////
-
-// Returns a list of game/app names
-// NOTE: THIS FUNCTION MUST BE KEPT UP TO DATE WITH THE GAME LIST
-function GetAppNames()
-{
-	$app_names = array(
-			"asmac",
-		);
-
-	return $app_names;
-}
+    Before you use ,make sure infos below are right:\n
+     -- $release_path/conf/db_config.php : db connection ;\n
+     -- $release_path/protected/config/main.php : environment var ;\n
+     -- $release_path/lib/activeRecord/* : db connection, directed in \n
+     +----------------------------------------------------------------+\n
+     | https://github.com/x2long/asmac/tree/master/lib/activeRecord   |\n
+     +----------------------------------------------------------------+\n";
 
 // Merges/overwrites files from one directory to another
 function MergeIfExists( $from_dir, $to_dir )
@@ -258,4 +102,19 @@ function MergeIfExists( $from_dir, $to_dir )
 	
 	echo "WARNING: '$from_dir' was empty.\n";
 	return false;
+}
+
+function do_with_git($repo,$temp_dir){
+    echo "Exporting asmac.git...\n";
+    system( "git clone $repo $temp_dir" );
+}
+
+function do_with_wget($repo,$temp_dir){
+    echo "Exporting asmac.git...\n";
+    echo "Creating '$temp_dir'\n";
+    $status = mkdir( $temp_dir, 0777, true );
+    if( $status !== true ){
+        die( "Unable to create directory '$temp_dir'.  Probably a permissions issue.\n" );
+    }
+    system( "wget -p $temp_dir --quiet $repo" );
 }
