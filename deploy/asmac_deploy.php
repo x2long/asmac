@@ -55,7 +55,7 @@ MergeIfExists( "$temp_build_path", $release_path );
 
 // Remove the temporary directory
 // Sadly, this is the cleanest way in PHP to remove a directory and its children
-//system( "rm -rf $temp_build_path" );
+system( "rm -rf $temp_build_path" );
 
 // Done!
 echo "\n\nComplete.\n $release_path is now ready for use.\n
