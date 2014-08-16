@@ -65,8 +65,7 @@ MergeIfExists( "$temp_build_path", $release_path );
 //system( "rm -rf $temp_build_path" );
 
 // Done!
-echo "\n\nComplete.\n $release_path is now ready for use.\n\n
-
+echo "\n\nComplete.\n $release_path is now ready for use.\n
     Before you use ,make sure infos below are right:\n
      -- $release_path/conf/db_config.php : db connection ;\n
      -- $release_path/protected/config/main.php : environment var ;\n
@@ -111,10 +110,10 @@ function do_with_git($repo,$temp_dir){
 
 function do_with_wget($repo,$temp_dir){
     echo "Exporting asmac.git...\n";
-    echo "Creating '$temp_dir'\n";
-    $status = mkdir( $temp_dir, 0777, true );
-    if( $status !== true ){
-        die( "Unable to create directory '$temp_dir'.  Probably a permissions issue.\n" );
-    }
+    //echo "Creating '$temp_dir'\n";
+    //$status = mkdir( $temp_dir, 0777, true );
+    //if( $status !== true ){
+    //    die( "Unable to create directory '$temp_dir'.  Probably a permissions issue.\n" );
+    //}
     system( "wget -p $temp_dir --quiet $repo" );
 }
