@@ -1,17 +1,10 @@
 #!/usr/bin/php
 <?php
 /*********************************
-/* xwars all-in-one development deploy script
-/* 
-/* USAGE: dev_deploy [username] [gamename] [build number]
-/*
-/* This script will build an xwars application from the current source, 
-/* then distribute it to all of the relevant app servers for that game.
-/*
+*
 /**********************************/
 
 // General Configuration
-//$repo = "https://69.164.199.119/fnx/repo1/trunk/game";
 $repo = "https://github.com/x2long/asmac.git";
 
 // Verify commandline usage
