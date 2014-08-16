@@ -42,6 +42,8 @@ class AsmacController extends EbuptController{
             $environment = Yii::app()->params['environment'];
             if($environment != "develop"){
                 $desc = iconv('UTF-8','GBK//ignore',trim($_POST['desc']));
+            }else{
+                $desc = trim($_POST['desc']);
             }
             $value = trim($_POST['value']);
             $stratety_records = CfgItrStrategyAr::model()->find('strategy ='.$strategy);
@@ -52,8 +54,12 @@ class AsmacController extends EbuptController{
             $attribute = array(
                 'condition' => "fe_id in( 211,212,213,214) and data_id=1 and act_task_id= ".$strategy,
             );
-            $criteria = CfgTaskStrategyAr::createCriteria($attribute);
-            $taskStrategyRecords = CfgTaskStrategyAr::model()->updateAll(array('value'=>$value),$criteria);
+            $environment = Yii::app()->params['environment'];
+            $taskStrategyRecords = 1;
+            if($environment != "develop"){
+                $criteria = CfgTaskStrategyAr::createCriteria($attribute);
+                $taskStrategyRecords = CfgTaskStrategyAr::model()->updateAll(array('value'=>$value),$criteria);
+            }
             if($taskStrategyRecords) {
                 echo "<script>alert('修改成功！');</script>";
             }else{

@@ -47,7 +47,7 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=> array_merge(array(
-            'recordFilesBaseDir'=> "/home/zentao/wwwroot/asmac/public/media",
+            'recordFilesBaseDir'=> "$EBUPT_WEB_BASE_DIR/public/media",
             'environment'=>"develop",   //develop for mysql and others for informix
         ),$mail_config
     ),
