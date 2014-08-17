@@ -1,4 +1,4 @@
 view/smarty/template_c/*
-log/*
+!log/*
 assets/*
 .idea/*
