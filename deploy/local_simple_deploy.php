@@ -28,11 +28,11 @@ if( !file_exists( $package_name ) ){
 }
 
 echo "unzip to $temp_dir\n";
-system( "unzip $package_name -d $temp_dir" );
-echo "mv $temp_dir/asmac-master/* to $temp_dir\n";
-system( "mv $temp_dir/asmac-master/* $temp_dir" );
+system( "unzip $package_name -d $temp_build_path" );
+echo "mv $temp_build_path/asmac-master/* to $temp_build_path\n";
+system( "mv $temp_build_path/asmac-master/* $temp_build_path" );
 echo "rm needless file or directory...\n";
-system( "rm -r $temp_dir/asmac-master" );
+system( "rm -r $temp_build_path/asmac-master" );
 system( "rm $package_name " );
 // Merge the directories in turn by copying them into the build directory
 echo "Copying temp to build...\n";

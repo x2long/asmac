@@ -13,7 +13,7 @@ $argv = $_SERVER['argv'];
 if( count( $argv ) < 3 )
 {
 	die( "USAGE: dev_deploy [temp_dir] [build_dir] [use_git] \n
-	    temp_dir used for build temp files,and build_dir is asmac web dir" );
+	    temp_dir used for build temp files,and build_dir is asmac web dir\n" );
 }
 
 $temp_build_path = "/home/webser/asmac_temp_build";
