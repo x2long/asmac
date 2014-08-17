@@ -78,7 +78,7 @@ class ManageController extends EbuptController
         if( isset($_GET["countPerPage"]) && $_GET["countPerPage"]){
             $countPerPage =trim($_GET['countPerPage']);
         }else{
-            $countPerPage =10;
+            $countPerPage =20;
         }
         if( isset($_GET["currentPage"]) && $_GET["currentPage"]){
             $currentPage =trim($_GET['currentPage']);
@@ -165,7 +165,7 @@ class ManageController extends EbuptController
         if( isset($_GET["countPerPage"]) && $_GET["countPerPage"]){
             $countPerPage =trim($_GET['countPerPage']);
         }else{
-            $countPerPage =10;
+            $countPerPage =20;
         }
         if( isset($_GET["currentPage"]) && $_GET["currentPage"]){
             $currentPage =trim($_GET['currentPage']);

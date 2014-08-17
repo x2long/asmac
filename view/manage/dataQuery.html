@@ -249,6 +249,8 @@
                     <thead>
                     <tr>
                         <th>主叫号码</th>
+                        <th>触发省份</th>
+                        <th>运营商类型</th>
                         <th>拦截截止时间</th>
                         <th>拦截次数</th>
                         <th>策略类型</th>
@@ -262,6 +264,8 @@
                     <tr class='odd'>
                         {//if/}
                         <td>{/$v.phone_number/}</td>
+                        <td>省份XX</td>
+                        <td>运营商XXX</td>
                         <td>{/$v.intercept_valid/}</td>
                         <td>{/$v.intercept_times/}</td>
                         <td>{/$v.illegal_type/}</td>

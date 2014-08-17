@@ -214,6 +214,15 @@
                 <form id='search-form' action="{/$base_url/}/manage/callHistory" method='get'>
                     <table class="table-2col uniform-style">
                         <tr>
+                            <th>触发省份:</th>
+                            <td><select id="chuFaSheFen" name="chuFaSheFen" class="ipt-s">
+                                <option selected value="-1">--请选择--</option>
+                                <option value='1'>省份1</option>
+                                <option value='2'>省份2</option>
+                                <option value='3'>省份3</option>
+                                <option value='4'>省份4</option>
+                                <option value='all'>全部</option>
+                            </select></td>
                             <th>主叫号码:</th>
                             <td><input type="text" name='callingNumber' id='callingNumber' class="ipt-s" value="" /></td>
                             <th>被叫号码:</th>
@@ -221,6 +230,13 @@
 
                         </tr>
                         <tr>
+                            <th>运营商类型:</th>
+                            <td><select id="yunYinType" name="yunYinType" class="ipt-s">
+                                <option selected value="-1">--请选择--</option>
+                                <option value='1'>中国移动</option>
+                                <option value='2'>中国联通</option>
+                                <option value='3'>全部</option>
+                            </select></td>
                             <th>呼叫开始时间:</th>
                             <td colspan="4">
                                 <input class="ipt-s" id="CallBeginTimeB" name="CallBeginTimeB" value="" />
@@ -241,6 +257,8 @@
                     <thead>
                     <tr>
                         <th>主叫号码</th>
+                        <th>触发省份</th>
+                        <th>运营商类型</th>
                         <th>被叫号码</th>
                         <th>呼叫开始时间</th>
                         <th>呼叫结束时间</th>
@@ -254,6 +272,8 @@
                     <tr class='odd'>
                         {//if/}
                         <td>{/$v.callingnumber/}</td>
+                        <td>省份XX</td>
+                        <td>运营商XXX</td>
                         <td>{/$v.callednumber /}</td>
                         <td>{/$v.callbegintime/}</td>
                         <td>{/$v.callendtime/}</td>

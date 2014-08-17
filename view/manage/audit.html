@@ -46,8 +46,7 @@
         }
 
         function addNoteOnRecord(stream_number,notes){
-            var param = "notes="+notes
-                    +"&streamNumber="+stream_number;
+            var param = "notes="+notes+"&streamNumber="+stream_number;
             var url = "{/$base_url/}/commonUtils/addNotes" +"?"+param;
             $.getJSON(url,function(data){
                 if(data == "true"){
@@ -57,7 +56,6 @@
                     alert("网络异常，请稍后!");
                 }
             })
-
         }
 
         function check() {
@@ -230,12 +228,13 @@
                             <th>触发省份:</th>
 							<td><select id="chuFaSheFen" name="chuFaSheFen" class="ipt-s">
                                 <option selected value="-1">--请选择--</option>
-                                <option value='1'>公众举报</option>
-                                <option value='2'>110尾号</option>
-                                <option value='3'>公检法号码</option>
-                                <option value='4'>特服尾号</option>
-                                <option value='all'>ALL</option>
-                            </select></td><th>主叫号码:</th>
+                                <option value='1'>省份1</option>
+                                <option value='2'>省份2</option>
+                                <option value='3'>省份3</option>
+                                <option value='4'>省份4</option>
+                                <option value='all'>全部</option>
+                            </select></td>
+                            <th>主叫号码:</th>
                             <td><input type="text" name='callingNumber' id='callingNumber' class="ipt-s" value="" /></td>
                             <th>被叫号码:</th>
                             <td><input type="text" name='calledNumber' id='calledNumber' class="ipt-s" value="" /></td>
@@ -277,6 +276,8 @@
                     <thead>
                     <tr>
                         <th>主叫号码</th>
+                        <th>触发省份</th>
+                        <th>运营商类型</th>
                         <th>首次疑似呼叫时间</th>
                         <th>最后疑似呼叫时间</th>
                         <th>疑似呼叫次数</th>
@@ -294,6 +295,8 @@
                     <tr class='odd'>
                         {//if/}
                         <td>{/$v.phone_number/}</td>
+                        <td>省份XX</td>
+                        <td>运营商XXX</td>
                         <td>{/$v.start_time /}</td>
                         <td>{/$v.end_time/}</td>
                         <td>{/$v.call_times/}</td>
