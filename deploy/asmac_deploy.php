@@ -6,12 +6,13 @@
 
 // General Configuration
 $repo = "https://github.com/x2long/asmac.git";
+$download_url = "https://github.com/x2long/asmac/archive/master.zip";
 
 // Verify commandline usage
 $argv = $_SERVER['argv'];
 if( count( $argv ) < 3 )
 {
-	die( "USAGE: dev_deploy [temp_dir] [build_dir] \n
+	die( "USAGE: dev_deploy [temp_dir] [build_dir] [use_git] \n
 	    temp_dir used for build temp files,and build_dir is asmac web dir" );
 }
 
@@ -38,6 +39,10 @@ while( $line = fgets( $handle ) )
 }
 pclose( $handle );
 
+if( isset( $argv[3] ) && $argv[3]=='false' ){
+        $use_git = false;
+}
+
 echo "Dowload code from git\n\n";
 if( $use_git === true )
 {
@@ -45,12 +50,12 @@ if( $use_git === true )
 	do_with_git($repo,$temp_build_path);
 }else{
     echo "Now use wget to download codes!\n\n";
-    do_with_wget($repo,$temp_build_path);
+    do_with_wget($download_url,$temp_build_path);
 }
 
 // Merge the directories in turn by copying them into the build directory
 echo "Copying temp to build...\n";
-MergeIfExists( "$temp_build_path", $release_path );
+MergeIfExists( $temp_build_path, $release_path );
 
 
 // Remove the temporary directory
@@ -101,12 +106,21 @@ function do_with_git($repo,$temp_dir){
     system( "git clone $repo $temp_dir" );
 }
 
-function do_with_wget($repo,$temp_dir){
+function do_with_wget($download_url,$temp_dir){
     echo "Exporting asmac.git...\n";
-    //echo "Creating '$temp_dir'\n";
-    //$status = mkdir( $temp_dir, 0777, true );
-    //if( $status !== true ){
-    //    die( "Unable to create directory '$temp_dir'.  Probably a permissions issue.\n" );
-    //}
-    system( "wget -p $temp_dir --quiet $repo" );
+    /*echo "Creating '$temp_dir'\n";
+    $status = mkdir( $temp_dir, 0777, true );
+    if( $status !== true ){
+        die( "Unable to create directory '$temp_dir'.  Probably a permissions issue.\n" );
+    }*/
+    system( "wget -P $temp_dir --quiet $download_url" );
+    echo "mv to zip file\n";
+    system( "mv $temp_dir/master $temp_dir/asmac_temp.zip" );
+    echo "unzip to $temp_dir\n";
+    system( "unzip $temp_dir/asmac_temp.zip -d $temp_dir" );
+    echo "mv $temp_dir/asmac-master/* to $temp_dir\n";
+    system( "mv $temp_dir/asmac-master/* $temp_dir" );
+    echo "rm needless file or directory...\n";
+    system( "rm -r $temp_dir/asmac-master" );
+    system( "rm $temp_dir/asmac_temp.zip " );
 }
