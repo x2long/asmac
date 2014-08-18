@@ -38,11 +38,15 @@ class AsmacConstants{
         return $array;
     }
 
-    public static function iconv_array_2_utf8($encode,$array){
+    public static function iconv_array_2_utf8($encode,$array,$index_name=null){
         foreach($array as $k=>&$value) {
             $temp = $value;
             try {
-                $value['province_name'] = iconv($encode,'UTF-8',$value['province_name']);
+                if( empty( $index_name ) ){
+                    $value = iconv($encode,'UTF-8',$value);
+                }else{
+                    $value[$index_name] = iconv($encode,'UTF-8',$value[$index_name]);
+                }
             } catch(Exception $e) {
                 $value = $temp;
             }

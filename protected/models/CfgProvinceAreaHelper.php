@@ -22,7 +22,7 @@ class CfgProvinceAreaHelper extends CfgProvinceAreaAr{
             $environment = Yii::app()->params['environment'];
             if($environment != "develop"){
                 $encode = mb_detect_encoding($ret, array('GB2312','GBK','UTF-8'));
-                $ret = AsmacConstants::iconv_array_2_utf8($encode,$ret);
+                $ret = AsmacConstants::iconv_array_2_utf8($encode,$ret,'province_name');
             }
             return $ret;
         }catch(Exception $e) {
