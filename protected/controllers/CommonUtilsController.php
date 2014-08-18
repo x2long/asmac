@@ -90,10 +90,12 @@ class CommonUtilsController extends EbuptController{
         if(!empty($confirm_record)){
             $confirm_record->illegal_reason=$reasons[$type];
             $mapSperPho = MapSpePhoneAr::model()->find('phone = "'.$pho_num.'"');
-            $reason_desc= empty($mapSperPho) ? $sus_record->spe_phone_desc.$sus_record->susdesc : $mapSperPho->name;
+            $reason_desc= empty($mapSperPho) ? $sus_record->susdesc : $mapSperPho->name;
             $environment = Yii::app()->params['environment'];
             if($environment != "develop"){
                 $confirm_record->reason_desc= iconv("UTF-8","GBK//ignore",$reason_desc);
+            }else{
+                $confirm_record->reason_desc= $reason_desc;
             }
             $saved= ($confirm_record->save()&& $saved) ? "true" : "false";
         }
