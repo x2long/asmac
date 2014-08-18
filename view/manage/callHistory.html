@@ -217,10 +217,9 @@
                             <th>触发省份:</th>
                             <td><select id="chuFaSheFen" name="chuFaSheFen" class="ipt-s">
                                 <option selected value="-1">--请选择--</option>
-                                <option value='1'>省份1</option>
-                                <option value='2'>省份2</option>
-                                <option value='3'>省份3</option>
-                                <option value='4'>省份4</option>
+                                {/foreach from=$all_province_name item=v/}
+                                <option value='{/ $v.province_name /}'>{/ $v.province_name /}</option>
+                                {//foreach/}
                                 <option value='all'>全部</option>
                             </select></td>
                             <th>主叫号码:</th>
@@ -272,7 +271,7 @@
                     <tr class='odd'>
                         {//if/}
                         <td>{/$v.callingnumber/}</td>
-                        <td>省份XX</td>
+                        <td>{/$v.triger_area/}</td>
                         <td>运营商XXX</td>
                         <td>{/$v.callednumber /}</td>
                         <td>{/$v.callbegintime/}</td>

@@ -204,12 +204,12 @@
                             <th>触发省份:</th>
                             <td><select id="chuFaSheFen" name="chuFaSheFen" class="ipt-s">
                                 <option selected value="-1">--请选择--</option>
-                                <option value='1'>公众举报</option>
-                                <option value='2'>110尾号</option>
-                                <option value='3'>公检法号码</option>
-                                <option value='4'>特服尾号</option>
-                                <option value='all'>ALL</option>
-                            </select></td><th>主叫号码:</th>
+                                {/foreach from=$all_province_name item=v/}
+                                <option value='{/ $v.province_name /}'>{/ $v.province_name /}</option>
+                                {//foreach/}
+                                <option value='all'>全部</option>
+                            </select></td>
+                            <th>主叫号码:</th>
                             <td><input type="text" name='callingNumber' id='callingNumber' class="ipt-s" value="" /></td>
                         </tr>
                         <tr>
@@ -264,7 +264,7 @@
                     <tr class='odd'>
                         {//if/}
                         <td>{/$v.phone_number/}</td>
-                        <td>省份XX</td>
+                        <td>{/$v.triger_area/}</td>
                         <td>运营商XXX</td>
                         <td>{/$v.intercept_valid/}</td>
                         <td>{/$v.intercept_times/}</td>

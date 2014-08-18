@@ -93,6 +93,14 @@ class SerInterDbtblackHelper extends SerInterDbtBlackAr{
                 $confirmTimeEnd .= '24';
                 $criteria->addBetweenCondition('ensure_time',$confirmTimeBegin,$confirmTimeEnd);
             }
+            if( isset($_GET["chuFaSheFen"]) && trim($_GET["chuFaSheFen"]) != "-1" && trim($_GET["chuFaSheFen"]) != "all"){
+                $province_name = trim($_GET['chuFaSheFen']);
+                $area_code_array = CfgProvinceAreaHelper::get_area_code_array_by_province_name($province_name);
+                foreach( $area_code_array as $k => $v){
+                    $area_code_array[$k] = trim($v['area_code']);
+                }
+                $criteria->addInCondition('triger_area',$area_code_array);
+            }
             //Yii::log($criteria->select, 'info');
             if($flag){
                 $criteria->limit = $num;

@@ -115,11 +115,14 @@ class ManageController extends EbuptController
                 $item->illegal_type = $result;
                 $item->start_time=date("Y-m-d H:i:s.000",strtotime($item->start_time));
                 $item->end_time=date("Y-m-d H:i:s.000",strtotime($item->end_time));
+                $area_code = $item->triger_area;
+                $item->triger_area = CfgProvinceAreaHelper::get_province_name_by_area_code($area_code);
             }
         }
         //=============================
         $model->username=Yii::app()->user->name;
-        $this->renderSmarty('manage/audit.html',array('model'=>$model,'suspect_records'=>$suspect_records,'params'=>$params));
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $this->renderSmarty('manage/audit.html',array('model'=>$model,'suspect_records'=>$suspect_records,'params'=>$params,'all_province_name'=>$all_province_name));
     }
 
     public function actionCallHistory(){
@@ -149,11 +152,14 @@ class ManageController extends EbuptController
             foreach($contralog_records as $item){
                 $item->callbegintime=date("Y-m-d H:i:s.000",strtotime($item->callbegintime));
                 $item->callendtime=date("Y-m-d H:i:s.000",strtotime($item->callendtime));
+                $area_code = $item->triger_area;
+                $item->triger_area = CfgProvinceAreaHelper::get_province_name_by_area_code($area_code);
             }
         }
         //=============================
         $model->username=Yii::app()->user->name;
-        $this->renderSmarty('manage/callHistory.html',array('model'=>$model,'contralog_records'=>$contralog_records,'params'=>$params));
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $this->renderSmarty('manage/callHistory.html',array('model'=>$model,'contralog_records'=>$contralog_records,'params'=>$params,'all_province_name'=>$all_province_name));
     }
 
     //数据查询接口
@@ -200,11 +206,14 @@ class ManageController extends EbuptController
                 $item->commit_time=date("Y-m-d H:i:s.000",strtotime($item->commit_time));
                 //$item->intercept_valid=date("Y-m-d H:i:s.000",strtotime($item->intercept_valid));
                 $item->intercept_valid=date("Y-m-d H:i:s.000",strtotime($item->intercept_valid));
+                $area_code = $item->triger_area;
+                $item->triger_area = CfgProvinceAreaHelper::get_province_name_by_area_code($area_code);
             }
         }
         //=================================
         $model->username=Yii::app()->user->name;
-        $this->renderSmarty("manage/dataQuery.html",array('model'=>$model,'kinds_records'=>$confirmed_records,'params'=>$params));
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $this->renderSmarty("manage/dataQuery.html",array('model'=>$model,'kinds_records'=>$confirmed_records,'params'=>$params,'all_province_name'=>$all_province_name));
     }
 
     //统计查询口径
