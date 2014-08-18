@@ -152,8 +152,8 @@ class ManageController extends EbuptController
             foreach($contralog_records as $item){
                 $item->callbegintime=date("Y-m-d H:i:s.000",strtotime($item->callbegintime));
                 $item->callendtime=date("Y-m-d H:i:s.000",strtotime($item->callendtime));
-                $area_code = $item->triger_area;
-                $item->triger_area = CfgProvinceAreaHelper::get_province_name_by_area_code($area_code);
+                $area_code = $item->callingvlr;
+                $item->callingvlr = CfgProvinceAreaHelper::get_province_name_by_area_code($area_code);
             }
         }
         //=============================

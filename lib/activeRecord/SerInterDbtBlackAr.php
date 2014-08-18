@@ -44,7 +44,7 @@ class SerInterDbtBlackAr extends ActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ser_inter_dbtblack';
+		return 'ser_inter_dbt_black';
 	}
 
 	/**
