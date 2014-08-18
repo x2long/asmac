@@ -35,7 +35,8 @@ return array(
 		'statePersister' => $components_config['statePersister'],
 		'securityManager' => $components_config['securityManager'],
 		'urlManager'=>$components_config['urlManager'],
-		'db' => $db_config['develop'],
+		'db' => $db_config['production_0'],
+		//'db2' => $db_config['production_1'],
 		'authManager'=>$components_config['authManager'],
 		'smarty' => $components_config['smarty'],
 		'phpExcelFactory' => $components_config['phpExcelFactory'],
@@ -48,7 +49,7 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=> array_merge(array(
             'recordFilesBaseDir'=> "$EBUPT_WEB_BASE_DIR/public/media",
-            'environment'=>"develop",   //develop for mysql and others for informix
+            'environment'=>"production",   //develop for mysql and others for informix
         ),$mail_config
     ),
 );
