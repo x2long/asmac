@@ -38,6 +38,18 @@ class AsmacConstants{
         return $array;
     }
 
+    public static function iconv_array_2_utf8($encode,$array){
+        foreach($array as $k=>&$value) {
+            $temp = $value;
+            try {
+                $value['province_name'] = iconv($encode,'UTF-8',$value['province_name']);
+            } catch(Exception $e) {
+                $value = $temp;
+            }
+        }
+        return $array;
+    }
+
     public static function getMillisecond() {
         list($t1, $t2) = explode(' ', microtime());
         return (float)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);

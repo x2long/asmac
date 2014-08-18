@@ -19,6 +19,11 @@ class CfgProvinceAreaHelper extends CfgProvinceAreaAr{
             $mysql="SELECT DISTINCT province_name from cfg_province_area";
             $command = $db->createCommand($mysql);
             $ret = $command->queryAll();
+            $environment = Yii::app()->params['environment'];
+            if($environment != "develop"){
+                $encode = mb_detect_encoding($ret, array('GB2312','GBK','UTF-8'));
+                $ret = AsmacConstants::iconv_array_2_utf8($encode,$ret);
+            }
             return $ret;
         }catch(Exception $e) {
             return "未知";

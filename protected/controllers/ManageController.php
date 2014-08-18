@@ -194,7 +194,7 @@ class ManageController extends EbuptController
         if(!empty($confirmed_records)){
             $environment = Yii::app()->params['environment'];
             if($environment != "develop"){
-                $encode = mb_detect_encoding($confirmed_records[0]->reason_desc, array('GB2312','GBK','UTF-8'));
+                $encode = mb_detect_encoding($confirmed_records, array('GB2312','GBK','UTF-8'));
             }
             foreach($confirmed_records as $item){
                 if($environment != "develop"){
