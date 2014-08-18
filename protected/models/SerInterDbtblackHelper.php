@@ -130,16 +130,21 @@ class SerInterDbtblackHelper extends SerInterDbtBlackAr{
         }else{
             $numberType ="all";
         }
-        //$numberType  suspected=>骚扰 ;fraud=>诈骗;normal=>正常;not=>未确认
-        //num_state  smallint 0：待确认电话号码 1：确认为骚扰电话号码 2: 确认为正常电话号码
-        //illegal_reason smallint 0:未确定 1：诈骗电话 2：骚扰电话
+        //$numberType
+        /*<option value='fraud'>诈骗号码</option>
+          <option value='normal'>正常号码</option>
+          <option value='nandf'>正常+诈骗号码</option>
+          <option value='yes'>已确认</option>
+          <option value='not'>未确认</option>*/
+        //num_state  smallint 0：待确认电话号码 1：确认为骚扰电话号码 2: 确认为正常电话号码，3：确认为“正常+诈骗电话号码”
+        //illegal_reason smallint 0:未确定 1：诈骗电话 2：骚扰电话，3：正常+诈骗电话号码
         if($numberType != "all" && $numberType !="-1"){
             $condition .= ' and ';
-            if($numberType == 'suspected') $condition .= 'num_state = 1 and illegal_reason = 2';
             if($numberType == 'fraud') $condition .= 'num_state = 1 and illegal_reason = 1';
             if($numberType == 'normal') $condition .= 'num_state = 2';
+            if($numberType == 'nandf') $condition .= 'num_state = 3 and illegal_reason = 3';
             if($numberType == 'yes') $condition .= 'num_state != 0';
-            if($numberType == 'not') $condition .= 'num_state = 0 and illegal_reason = 0';
+            if($numberType == 'not') $condition .= 'num_state = 0';
         }
 
         //========================================================
@@ -149,6 +154,11 @@ class SerInterDbtblackHelper extends SerInterDbtBlackAr{
             $strategyType ="all";
         }
         //$strategyType 0:高频违规 1：公众举报 2：110尾号 3：公检法号码 4：特服尾号
+        /* <option value='3'>公检法</option>
+         * <option value='4'>特服</option>
+         * <option value='2'>110尾号</option>
+         * <option value='1'>公众举报</option>
+         * */
         //illegal_type smallint 0:高频违规 1：公众举报 2：110尾号 3：公检法号码 4：特服尾号
         if($strategyType!='all' && $strategyType != "-1"){
             $condition .= ' and illegal_type ='.$strategyType;

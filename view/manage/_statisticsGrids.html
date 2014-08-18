@@ -12,7 +12,10 @@
                 +"&kindsType={/$params.kindsType/}"
                 +"&partName={/$params.partName/}"
                 +"&operTimeBegin={/$params.operTimeBegin/}"
-                +"&operTimeEnd={/$params.operTimeEnd/}"+"&";
+                +"&operTimeEnd={/$params.operTimeEnd/}"
+                +"&chuFaSheFen={/$params.chuFaSheFen/}"
+                +"&yunYinType={/$params.yunYinType/}"
+                +"&";
         if(totalPage>1){
             pageNavForAjax.url = "{/$base_url/}/commonUtils/getStatisticsInjectedData"+ '?' + params;
             pageNavForAjax.pre = "上一页";
@@ -34,7 +37,9 @@
                 +"&kindsType={/$params.kindsType/}"
                 +"&partName={/$params.partName/}"
                 +"&operTimeBegin={/$params.operTimeBegin/}"
-                +"&operTimeEnd={/$params.operTimeEnd/}";
+                +"&operTimeEnd={/$params.operTimeEnd/}"
+                +"&chuFaSheFen={/$params.chuFaSheFen/}"
+                +"&yunYinType={/$params.yunYinType/}";
         $.getJSON("{/$base_url/}/commonUtils/getStatisticsInjectedData?"+params, function(result){
             $("#intervalDataBody").html("");
             $("#intervalDataBody").html(result);

@@ -7,15 +7,17 @@
             $("#operTimeEnd").datepicker({
                 dateFormat : 'yy-mm-dd'
             });
-            showCharts({/$model->page_selector/},null,null,null);
+            showCharts({/$model->page_selector/},null,null,null,null,null);
         });
 
-        function showCharts(tabNum,kindsType,operTimeBegin,operTimeEnd){
+        function showCharts(tabNum,kindsType,operTimeBegin,operTimeEnd,chuFaSheFen,yunYinType){
             //根据具体情况去获取数据，绘图用的,查询口径统一
             var param = "tabNum="+tabNum
                     +"&kindsType="+kindsType
                     +"&operTimeBegin="+operTimeBegin
-                    +"&operTimeEnd="+operTimeEnd;
+                    +"&operTimeEnd="+operTimeEnd
+                    +"&chuFaSheFen="+chuFaSheFen
+                    +"&yunYinType="+yunYinType;
             var url = "{/$base_url/}/commonUtils/getChartsData" +"?"+param;
             $.getJSON(url,function(data){
                 if(data !== ""){
@@ -35,12 +37,14 @@
             $("#intervalDataBody").html("");
         }
         //显示具体列表信息，也要根据数据来查询
-        function showGridsTable(tabNum,kindsType,partName,operTimeBegin,operTimeEnd){
+        function showGridsTable(tabNum,kindsType,partName,operTimeBegin,operTimeEnd,chuFaSheFen,yunYinType){
             var param = "tabNum="+tabNum
                     +"&kindsType="+kindsType
                     +"&partName="+partName
                     +"&operTimeBegin="+operTimeBegin
-                    +"&operTimeEnd="+operTimeEnd;
+                    +"&operTimeEnd="+operTimeEnd
+                    +"&chuFaSheFen="+chuFaSheFen
+                    +"&yunYinType="+yunYinType;
             var url = "{/$base_url/}/manage/getStatisticsGrids" +"?"+param;
             $.getJSON(url, function(result){
                 clearStatisticData();
@@ -65,8 +69,10 @@
                 operTimeEnd =null;
             }
             var kindsType = ""+$("#kindsType").val();
+            var chuFaSheFen = ""+$("#chuFaSheFen").val();
+            var yunYinType = ""+$("#yunYinType").val();
             //以所填规则去访问数据
-            showCharts({/$model->page_selector/},kindsType,operTimeBegin,operTimeEnd);
+            showCharts({/$model->page_selector/},kindsType,operTimeBegin,operTimeEnd,chuFaSheFen,yunYinType);
         }
 
         function rest() {
@@ -74,6 +80,8 @@
             $("#operateType").val("");
             $("#operTimeBegin").val("");
             $("#operTimeEnd").val("");
+            $("#chuFaSheFen").val("");
+            $("#yunYinType").val("");
         }
     </script>
 </head>
@@ -88,6 +96,23 @@
         <div class="hintmsg">[说明]&nbsp;所有查询条件，均支持模糊查询，输入部分关键字即可。</div>
         <form id='search-form' action="" method='get'>
             <table class="table-2col uniform-style">
+                <tr>
+                    <th>触发省份:</th>
+                    <td><select id="chuFaSheFen" name="chuFaSheFen" class="ipt-s">
+                        <option selected value="-1">--请选择--</option>
+                        {/foreach from=$all_province_name item=v/}
+                        <option value='{/ $v.province_name /}'>{/ $v.province_name /}</option>
+                        {//foreach/}
+                        <option value='all'>全部</option>
+                    </select></td>
+                    <th>运营商类型:</th>
+                    <td><select id="yunYinType" name="yunYinType" class="ipt-s">
+                        <option selected value="-1">--请选择--</option>
+                        <option value='1'>中国移动</option>
+                        <option value='2'>中国联通</option>
+                        <option value='3'>全部</option>
+                    </select></td>
+                </tr>
                 <tr>
                     {/if $model->page_selector == 3/}
                     <th>选择策略:</th>
@@ -153,6 +178,8 @@
             <thead>
             <tr>
                 <th>主叫号码</th>
+                <th>触发省份</th>
+                <th>运营商类型</th>
                 {/if $model->page_selector == 3/}
                 <th>入库时间</th>
                 <th>拦截截止时间</th>

@@ -181,7 +181,6 @@ class ManageController extends EbuptController
         //根据上面的情况查询数据
         //==================================
         $helper = new SerInterBlackHelper();
-        //$suspect_records =$helper->get_newest_suspected_records();
         $model = new AsmacLoginForm();
         $params =$_GET;
         $model->totalNum =$helper->get_confirmed_records_by_conditions(0,0,false);
@@ -236,11 +235,12 @@ class ManageController extends EbuptController
      */
     public function actionGetStatisticsFrameCharts(){
         $tabNum=$_GET["tabNum"];
-        $tabTitles=array("","按策略分析信息总览","确认信息总览","拦截信息总览");
+        $tabTitles=array("","确认信息总览","按策略分析信息总览","拦截信息总览");
         $model = new AsmacLoginForm();
         $model->tabTitle = $tabTitles[$tabNum];
         $model->page_selector = $tabNum;
-        $this->renderJson($this->renderSmarty("manage/_statisticsFrameCharts.html",array('model'=>$model),true));
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $this->renderJson($this->renderSmarty("manage/_statisticsFrameCharts.html",array('model'=>$model,'all_province_name'=>$all_province_name),true));
     }
 
     public function actionGetStatisticsGrids(){

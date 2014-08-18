@@ -172,6 +172,9 @@ class CommonUtilsController extends EbuptController{
                 $encode = mb_detect_encoding($statistics_records, array('GB2312','GBK','UTF-8'));
             }
             foreach($statistics_records as $item){
+                $area_code = $item->triger_area;
+                $item->triger_area = CfgProvinceAreaHelper::get_province_name_by_area_code($area_code);
+                $item->service_key = "运营商XX";
                 if($tabNum==3){
                     if($environment != "develop"){
                         $reason_desc = ''.$item->reason_desc;

@@ -21,7 +21,7 @@ class SerInterBlackHelper extends SerInterBlackAr{
      */
     public function get_confirmed_records_by_conditions($num, $offset,$flag){
         try{
-            $sidx = 'intercept_times';
+            $sidx = 'intercept_valid';
             $sord = 'desc';
             $attribute = array(
                 'order' => $sidx." ".$sord, //order by book_id desc
@@ -75,8 +75,9 @@ class SerInterBlackHelper extends SerInterBlackAr{
         //illegal_reason smallint 1：诈骗电话 2：骚扰电话
         if($numberType != "all"&& $numberType!="-1"){
             $condition .= ' and ';
-            if($numberType == 'suspected') $condition .= 'illegal_reason = 2';
-            if($numberType == 'fraud') $condition .= 'illegal_reason = 1';
+            if($numberType == 'fraud') $condition .= 'num_state = 1 and illegal_reason = 1';
+            if($numberType == 'normal') $condition .= 'num_state = 2';
+            if($numberType == 'nandf') $condition .= 'num_state = 3 and illegal_reason = 3';
         }
 
         //========================================================

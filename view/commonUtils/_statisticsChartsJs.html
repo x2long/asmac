@@ -34,7 +34,7 @@
                     events: {
                         click: function(e){
                             //alert(e.point.name+"xxl"+e.point.y);
-                            showGridsTable({/$params.tabNum/},"{/$params.kindsType/}",e.point.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/});
+                            showGridsTable({/$params.tabNum/},"{/$params.kindsType/}",e.point.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/},"{/$params.chuFaSheFen/}","{/$params.yunYinType/}");
                             //showGridsTable({/$params.tabNum/},"name",e.point.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/});
                         }
                     },
@@ -92,7 +92,7 @@
                         click: function(e){
                             // alert(e.point.series.name+"xxl"+e.point.y);
                             //showGridsTable(tabNum,type,partName,operTimeBegin,operTimeEnd);
-                            showGridsTable({/$params.tabNum/},"{/$params.kindsType/}",e.point.series.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/});
+                            showGridsTable({/$params.tabNum/},"{/$params.kindsType/}",e.point.series.name,{/$params.operTimeBegin/},{/$params.operTimeEnd/},"{/$params.chuFaSheFen/}","{/$params.yunYinType/}");
                         }
                     }
                 },

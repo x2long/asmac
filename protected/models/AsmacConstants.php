@@ -138,6 +138,14 @@ class AsmacConstants{
                     $criteria->addBetweenCondition('commit_time',$operTimeBegin,$operTimeEnd);
                 }
             }
+            if( isset($_GET["chuFaSheFen"]) && trim($_GET["chuFaSheFen"]) != "-1" && trim($_GET["chuFaSheFen"]) != "all" && trim($_GET["chuFaSheFen"]) != "null"){
+                $province_name = trim($_GET['chuFaSheFen']);
+                $area_code_array = CfgProvinceAreaHelper::get_area_code_array_by_province_name($province_name);
+                foreach( $area_code_array as $k => $v){
+                    $area_code_array[$k] = trim($v['area_code']);
+                }
+                $criteria->addInCondition('triger_area',$area_code_array);
+            }
             if($flag){
                 $criteria->limit = $num;
                 $criteria->offset = $offset;
@@ -181,9 +189,9 @@ class AsmacConstants{
                 }
                 if($kindsType!='all' && $kindsType != "-1"){
                     $condition .= ' and ';
-                    if($kindsType == 'suspected') $condition .= 'num_state = 1 and illegal_reason = 2';
                     if($kindsType == 'fraud') $condition .= 'num_state = 1 and illegal_reason = 1';
                     if($kindsType == 'normal') $condition .= 'num_state = 2';
+                    if($kindsType == 'nandf') $condition .= 'num_state = 3 and illegal_reason = 3';
                     if($kindsType == 'not') $condition .= 'num_state = 0 and illegal_reason = 0';
                 }
                 //partName=>illegal_type
