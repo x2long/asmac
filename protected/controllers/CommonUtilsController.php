@@ -28,6 +28,8 @@ class CommonUtilsController extends EbuptController{
      */
     public function actionGetAuditRecords($streamNumber){
         $auditOper = trim($_GET["auditOper"]);
+        $user = LoginUserAr::model()->find( "user_name = '".Yii::app()->user->name."'");
+        $user_level = $user->account_level;
         $sus_record = SerInterDbtBlackAr::model()->find('stream_number = '.$streamNumber);
         $callingNumber = $sus_record->phone_number;
         //根据此电话号码，查询所有录音列表
@@ -42,7 +44,7 @@ class CommonUtilsController extends EbuptController{
             $each['susdesc']="被叫用户为：".$arr[2];
             $all_records[$k]=$each;
         }
-        $this->renderJson($this->renderSmarty("manage/_recordList.html",array('suspect_records'=>$all_records,'streamNumber'=>$streamNumber,'auditOper'=>$auditOper),true));
+        $this->renderJson($this->renderSmarty("manage/_recordList.html",array('suspect_records'=>$all_records,'streamNumber'=>$streamNumber,'auditOper'=>$auditOper,'user_level'=>$user_level),true));
         //$this->renderSmarty("manage/_recordList.html",array('suspect_records'=>$all_records,'streamNumber'=>$streamNumber));
     }
 

@@ -127,7 +127,7 @@
     </table>
     </form>
     <hr>
-    {/ if $auditOper != "none" /}
+    {/ if ($auditOper != "none") and ($user_level !="common") /}
     <table class="table-2col" style="width:400px;">
         <tr>
             <th>审核类型:</th>

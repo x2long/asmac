@@ -69,7 +69,9 @@
                 width: 500,
                 modal: true
             });
+            {/ if $model->user_level =="root"/}
             setTab('one',1,2);
+            {//if/}
         });
         function auditionRecord(stream_number){
             var url = "{/$base_url/}/commonUtils/getAuditRecords"+"?streamNumber="+stream_number;
@@ -81,13 +83,13 @@
             for(i=1;i<=n;i++){
                 var menu=document.getElementById(name+i);
                 var con=document.getElementById("con_"+name+"_"+i);
-                menu.className=i==cursel?"hover":"";
+                menu.className= i==cursel? "hover":"";
                 con.style.display=i==cursel?"block":"none";
             }
         }
         function addNoteOnRecord(stream_number,notes){
             var param = "notes="+notes
-                    +"&streamNumber="+stream_number;
+                    +"&streamNumber=" + stream_number;
             var url = "{/$base_url/}/commonUtils/addNotes" +"?"+param;
             $.getJSON(url,function(data){
                 if(data == "true"){
@@ -273,7 +275,9 @@
                 <li class="active current"><a href="{/$base_url/}/manage">人工审核</a></li>
                 <li ><a href="{/$base_url/}/manage/dataQuery">数据查询</a></li>
                 <li ><a href="{/$base_url/}/manage/dataStatistic">数据统计</a></li>
+                {/ if $model->user_level =="root"/}
                 <li ><a href="{/$base_url/}/asmac/create">策略管理</a></li>
+                {//if/}
             </ul>
         </div>
     </div>
@@ -310,12 +314,14 @@
                     <li  style="display: block"><a href="{/$base_url/}/manage/dataStatistic">数据统计管理</a></li>
                 </ul>
             </li>
+            {/ if $model->user_level =="root"/}
             <li ><a href="javascript:void(0)">策略管理</a>
                 <ul>
 					<li style="display: block"><a href="{/$base_url/}/asmac/list">策略号码管理</a></li>
                     <li style="display: block"><a href="{/$base_url/}/asmac/create">策略频次设置</a></li>
                 </ul>
             </li>
+            {//if/}
         </ul>
     </div>
 </div>
@@ -324,6 +330,7 @@
         <div class="breadcrumb">
             <span class="cur">我所在的位置：人工审核</span>
         </div>
+        {/ if $model->user_level =="root"/}
         <div class="main-unit">
             <div class="header">
                 <span id="header-title"><a >人工审核</a>-录入与查询</span>
@@ -477,6 +484,7 @@
                 </table>
             </div>
         </div>
+        {//if/}
         <div class="main-unit">
             <div class="header">
                 <span>最新数据</span>

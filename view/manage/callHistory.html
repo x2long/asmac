@@ -152,7 +152,9 @@
                 <li ><a href="{/$base_url/}/manage">人工审核</a></li>
                 <li class="active current"><a href="{/$base_url/}/manage/dataQuery">数据查询</a></li>
                 <li ><a href="{/$base_url/}/manage/dataStatistic">数据统计</a></li>
+                {/ if $model->user_level =="root"/}
                 <li ><a href="{/$base_url/}/asmac/create">策略管理</a></li>
+                {//if/}
             </ul>
         </div>
     </div>
@@ -189,12 +191,14 @@
                     <li  style="display: block"><a href="{/$base_url/}/manage/dataStatistic">数据统计管理</a></li>
                 </ul>
             </li>
+            {/ if $model->user_level =="root"/}
             <li ><a href="javascript:void(0)">策略管理</a>
                 <ul>
                     <li style="display: block"><a href="{/$base_url/}/asmac/list">策略号码管理</a></li>
                     <li style="display: block"><a href="{/$base_url/}/asmac/create">策略频次设置</a></li>
                 </ul>
             </li>
+            {//if/}
         </ul>
     </div>
 </div>

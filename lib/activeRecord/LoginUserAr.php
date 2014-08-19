@@ -12,7 +12,7 @@
  * @property string $birthday
  * @property integer $score
  * @property string $login_passwd
- * @property integer $mapid
+ * @property string $mapid
  * @property string $confirmed
  * @property string $account_level
  * @property string $write_off
@@ -47,12 +47,13 @@ class LoginUserAr extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('score, mapid', 'numerical', 'integerOnly'=>true),
+			array('score', 'numerical', 'integerOnly'=>true),
 			array('user_name, nick_name, birthday', 'length', 'max'=>20),
 			array('e_mail, login_passwd', 'length', 'max'=>50),
-			array('gender', 'length', 'max'=>2),
-			array('confirmed, write_off, freeze', 'length', 'max'=>1),
-			array('account_level', 'length', 'max'=>10),
+            array('mapid', 'length', 'max'=>11),
+            array('gender', 'length', 'max'=>2),
+            array('confirmed, write_off, freeze', 'length', 'max'=>1),
+            array('account_level', 'length', 'max'=>10),
 			array('image_url', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

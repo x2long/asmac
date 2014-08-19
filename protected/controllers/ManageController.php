@@ -38,6 +38,7 @@ class ManageController extends EbuptController
         $model->username = Yii::app()->user->name;
         $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
         $model->user_level = $user->account_level;
+
         if( $model->user_level == 'common'){
             $_GET['chuFaSheFen'] = $user->mapid;
         }
@@ -200,7 +201,6 @@ class ManageController extends EbuptController
         //==================================
         $helper = new SerInterBlackHelper();
         $model = new AsmacLoginForm();
-        $model = new AsmacLoginForm();
         $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $model->username = Yii::app()->user->name;
         $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
@@ -210,6 +210,8 @@ class ManageController extends EbuptController
             $all_province_name = array(array('province_name'=>$user->mapid));
         }
         $params =$_GET;
+        //var_dump(isset($_GET["chuFaSheFen"]));
+        var_dump($_GET['chuFaSheFen']);
         $model->totalNum =$helper->get_confirmed_records_by_conditions(0,0,false);
         if($model->totalNum === false) $model->totalNum = 0;
         $model->currentPage = $currentPage;
