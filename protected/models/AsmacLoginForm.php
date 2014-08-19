@@ -8,6 +8,8 @@
 class AsmacLoginForm extends FormModel
 {
     public $username;
+    public $user_level;
+    public $user_province;
     public $login_passwd;
     public $returnUrl;
     public $tabTitle;

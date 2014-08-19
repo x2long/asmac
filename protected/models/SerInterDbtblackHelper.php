@@ -32,6 +32,14 @@ class SerInterDbtblackHelper extends SerInterDbtBlackAr{
                 $array[$k] = $v["callingnumber"];
             }
             $criteria = $this->createCriteria($attribute);
+            if( isset($_GET["chuFaSheFen"]) && trim($_GET["chuFaSheFen"]) != "-1" && trim($_GET["chuFaSheFen"]) != "all"){
+                $province_name = trim($_GET['chuFaSheFen']);
+                $area_code_array = CfgProvinceAreaHelper::get_area_code_array_by_province_name($province_name);
+                foreach( $area_code_array as $k => $v){
+                    $area_code_array[$k] = trim($v['area_code']);
+                }
+                $criteria->addInCondition('triger_area',$area_code_array);
+            }
             $criteria->addInCondition('phone_number',$array);
             $records = $this->model->findAll($criteria,"");
             return $records;

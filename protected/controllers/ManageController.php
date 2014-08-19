@@ -36,6 +36,11 @@ class ManageController extends EbuptController
         }
         $model = new AsmacLoginForm();
         $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+        }
         $title = "人工审核";
         $helper = new SerInterDbtblackHelper();
         $params =$_GET;
@@ -90,6 +95,14 @@ class ManageController extends EbuptController
         $helper = new SerInterDbtblackHelper();
         //$suspect_records =$helper->get_newest_suspected_records();
         $model = new AsmacLoginForm();
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+            $all_province_name = array(array('province_name'=>$user->mapid));
+        }
         $params =$_GET;
         $model->totalNum =$helper->get_suspected_records_by_conditions(0,0,false);
         if($model->totalNum === false) $model->totalNum = 0;
@@ -120,8 +133,6 @@ class ManageController extends EbuptController
             }
         }
         //=============================
-        $model->username=Yii::app()->user->name;
-        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $this->renderSmarty('manage/audit.html',array('model'=>$model,'suspect_records'=>$suspect_records,'params'=>$params,'all_province_name'=>$all_province_name));
     }
 
@@ -140,6 +151,15 @@ class ManageController extends EbuptController
         $helper = new ItfContralogHelper();
         //$suspect_records =$helper->get_newest_suspected_records();
         $model = new AsmacLoginForm();
+        $model = new AsmacLoginForm();
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+            $all_province_name = array(array('province_name'=>$user->mapid));
+        }
         $params =$_GET;
         $model->totalNum =$helper->get_contralog_records_by_conditions(0,0,false);
         if($model->totalNum === false) $model->totalNum = 0;
@@ -157,8 +177,6 @@ class ManageController extends EbuptController
             }
         }
         //=============================
-        $model->username=Yii::app()->user->name;
-        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $this->renderSmarty('manage/callHistory.html',array('model'=>$model,'contralog_records'=>$contralog_records,'params'=>$params,'all_province_name'=>$all_province_name));
     }
 
@@ -182,6 +200,15 @@ class ManageController extends EbuptController
         //==================================
         $helper = new SerInterBlackHelper();
         $model = new AsmacLoginForm();
+        $model = new AsmacLoginForm();
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+            $all_province_name = array(array('province_name'=>$user->mapid));
+        }
         $params =$_GET;
         $model->totalNum =$helper->get_confirmed_records_by_conditions(0,0,false);
         if($model->totalNum === false) $model->totalNum = 0;
@@ -210,15 +237,20 @@ class ManageController extends EbuptController
             }
         }
         //=================================
-        $model->username=Yii::app()->user->name;
-        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $this->renderSmarty("manage/dataQuery.html",array('model'=>$model,'kinds_records'=>$confirmed_records,'params'=>$params,'all_province_name'=>$all_province_name));
     }
 
     //统计查询口径
     public function actionDataStatistic(){
         $model = new AsmacLoginForm();
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+            $all_province_name = array(array('province_name'=>$user->mapid));
+        }
         $this->renderSmarty("manage/dataStatistics.html",array('model'=>$model));
     }
 
@@ -237,9 +269,16 @@ class ManageController extends EbuptController
         $tabNum=$_GET["tabNum"];
         $tabTitles=array("","确认信息总览","按策略分析信息总览","拦截信息总览");
         $model = new AsmacLoginForm();
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+            $all_province_name = array(array('province_name'=>$user->mapid));
+        }
         $model->tabTitle = $tabTitles[$tabNum];
         $model->page_selector = $tabNum;
-        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $this->renderJson($this->renderSmarty("manage/_statisticsFrameCharts.html",array('model'=>$model,'all_province_name'=>$all_province_name),true));
     }
 
@@ -247,6 +286,14 @@ class ManageController extends EbuptController
         //get totalNum for each kind
         $tabNum=$_GET["tabNum"];
         $model = new AsmacLoginForm();
+        $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
+        $model->username = Yii::app()->user->name;
+        $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
+        $model->user_level = $user->account_level;
+        if( $model->user_level == 'common'){
+            $_GET['chuFaSheFen'] = $user->mapid;
+            $all_province_name = array(array('province_name'=>$user->mapid));
+        }
         $allTabsArray=array();
         $allTabsArray[1]=array("高频违规","公众举报","110尾号","公检法号码","特服尾号");
         $allTabsArray[2]=$allTabsArray[1];
