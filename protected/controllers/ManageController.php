@@ -152,7 +152,6 @@ class ManageController extends EbuptController
         $helper = new ItfContralogHelper();
         //$suspect_records =$helper->get_newest_suspected_records();
         $model = new AsmacLoginForm();
-        $model = new AsmacLoginForm();
         $all_province_name = CfgProvinceAreaHelper::getProvinceNameArray();
         $model->username = Yii::app()->user->name;
         $user = LoginUserAr::model()->find( "user_name = '".$model->username."'");
