@@ -1,0 +1,4 @@
+ASMAC CHANGE LOG
+--------------------------------------------------------------------------------
+Changes with V1.1.2                                         20 Aug 2014
+ [变更] 修改LoginUser的mapid的类型为string,对应数据库为varchar（11）
