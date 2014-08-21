@@ -58,10 +58,10 @@ create table `ser_inter_dbtblack`
     `fe_id` int(11) not null ,
     `findsustimes` int(11) not null ,
     `ensure_time` char(14) default null ,
-	  `last_recordtime` char(14) default null ,
-	  `triger_area` char(6) default null ,
-	  `service_key` int(20) default null ,
-    primary key (`stream_number`)
+    `last_recordtime` char(14) default null ,
+    `triger_area` char(6) default null ,
+    `service_key` int(20) default null ,
+     primary key (`stream_number`)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8$$
 create index idx_dbt_phone on ser_inter_dbtblack (phone_number)$$
 create index idx_dbt_commit on ser_inter_dbtblack (commit_time)$$
@@ -81,8 +81,8 @@ create table `ser_inter_black`
     `intercept_valid` varchar(14),
     `seg_flag` char(1) default '1',
     `triger_area` char(6) default null ,
-	  `service_key` int(20) default null ,
-    primary key (`stream_number`)
+    `service_key` int(20) default null ,
+     primary key (`stream_number`)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8$$
 create index idx_phone_number on ser_inter_black (phone_number)$$
 create index commit_time on ser_inter_black (commit_time)$$
@@ -175,7 +175,7 @@ CREATE TABLE `login_user` (
   `birthday` varchar(20) default NULL,
   `score` integer default NULL,
   `login_passwd` varchar(50) default NULL,
-  `mapid` integer default NULL,
+  `mapid` varchar(11) default NULL,
   `confirmed` char(1) default NULL,
   `account_level` varchar(10) default NULL,
   `write_off` char(1) default NULL,
