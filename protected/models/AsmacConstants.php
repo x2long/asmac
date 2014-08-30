@@ -71,15 +71,20 @@ class AsmacConstants{
     }
 
     public static function getAllFilesWithoutSub($dir){
-        $handler = opendir($dir);
-        $files = null;
-        while (($filename = readdir($handler)) !== false) {//务必使用!==，防止目录下出现类似文件名“0”等情况
-            if ($filename != "." && $filename != "..") {
-                $files[] = $filename ;
-            }
-        }
-        closedir($handler);
-        return $files;
+        if(is_string($dir)) $dir = array($dir);
+	$files = null;
+ 	foreach($dir as $d){
+	  $dirname = array_pop(explode(DIRECTORY_SEPARATOR,$d));
+	  $handler = opendir($d);
+   	  while(($filename = readdir($handler))!== false){
+	    // must !== in case filename =='0'
+	    if($filename != "." && $filename != ".."){
+	      $files[] = $dirname.DIRECTORY_SEPARATOR.$filename;
+     	    }
+	  }
+   	  closedir($handler);
+	}
+ 	return files;
     }
 
     /**

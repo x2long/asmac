@@ -48,7 +48,13 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=> array_merge(array(
-            'recordFilesBaseDir'=> "$EBUPT_WEB_BASE_DIR/public/media",
+            // recordFileBaseDir can be string or array
+     	    /*
+               for string 'recordFileBaseDir' => "dir"
+               for array  'recordFileBaseDir' => array('dirnoe','dirtwo')
+               notes that : jplayer need know the dir,so best in the same dir with each subdir
+	    */ 
+	    'recordFilesBaseDir'=> "$EBUPT_WEB_BASE_DIR/public/media",
             'environment'=>"develop",   //develop for mysql and others for informix
         ),$mail_config
     ),

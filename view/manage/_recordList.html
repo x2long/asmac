@@ -23,8 +23,8 @@
                 ready: function () {
                     $(this).jPlayer("setMedia", {
                         title:name,
-                        mp3: "{/$base_url/}/public/media/"+name,
-                        wav: "{/$base_url/}/public/media/"+name
+                        mp3: "{/$base_url/}/public/"+name,
+                        wav: "{/$base_url/}/public/"+name
                     }).jPlayer("play"); // auto play
                 },
                 ended: function (event) {
