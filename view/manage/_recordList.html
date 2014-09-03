@@ -15,6 +15,11 @@
                     $("#jquery_jplayer_1").jPlayer("stop");
                 }
             });
+            $('#showRecordPlayerAmr').dialog({
+                autoOpen: false,
+                width: 500,
+                modal: true
+            });
         });
         function showRecordPlayer(name){
             $("#jquery_jplayer_1").jPlayer("clearMedia");
@@ -42,6 +47,12 @@
                 $(this).jPlayer("pauseOthers");
             });
             $('#showRecordPlayer').dialog('open');
+        }
+        function showRecordPlayerAmr(name){
+            $('#showforamrtitle').html("<b>审核文件："+name+"</b>");
+
+            $('#showforamr').attr("src","{/ $base_url /}/public/"+name);
+            $('#showRecordPlayerAmr').dialog('open');
         }
         function confirmTheNum(type){
             var param = "streamNumber={/$streamNumber/}" +"&type="+type;
@@ -118,7 +129,11 @@
             <td>{/$v.phone_number/}</td>
             <td>{/$v.start_time/}</td>
             <td>
+                {/ if $v.record_name|substr:"-3" !="amr"/}
                 <a class="opt-play opt" href="javascript:showRecordPlayer('{/$v.record_name/}')" title="播放">试听</a>
+                {/else/}
+                <a class="opt-play opt" href="javascript:showRecordPlayerAmr('{/$v.record_name/}')" title="播放">试听</a>
+                {//if/}
             </td>
             <td>{/$v.susdesc/}</td>
         </tr>
@@ -199,5 +214,26 @@
             </div>
         </div>
     </div>
+
+</div>
+
+
+<div id ="showRecordPlayerAmr" title="试听录音播放" class="main-unit">
+    <script type="text/javascript"
+            src="{/$base_url/}/public/js/music/jquery-1.2.3.pack.js"></script>
+    <script type="text/javascript"
+            src="{/$base_url/}/public/js/music/jquery.embedquicktime.js"></script>
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(document).ready(function() {
+            jQuery.embedquicktime({
+                jquery: '{/$base_url/}/public/js/music/jquery-1.2.3.pack.js',
+                plugin: '{/$base_url/}/public/js/music/jquery.embedquicktime.js'
+            });
+        });
+    </script>
+        <p id="showforamrtitle"></p>
+        <embed id="showforamr" width="100%" height="100%" name="plugin" src="" type="audio/amr">
+
 
 </div>

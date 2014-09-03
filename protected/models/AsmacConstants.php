@@ -72,19 +72,19 @@ class AsmacConstants{
 
     public static function getAllFilesWithoutSub($dir){
         if(is_string($dir)) $dir = array($dir);
-	$files = null;
- 	foreach($dir as $d){
-	  $dirname = array_pop(explode(DIRECTORY_SEPARATOR,$d));
-	  $handler = opendir($d);
-   	  while(($filename = readdir($handler))!== false){
-	    // must !== in case filename =='0'
-	    if($filename != "." && $filename != ".."){
-	      $files[] = $dirname.DIRECTORY_SEPARATOR.$filename;
-     	    }
-	  }
-   	  closedir($handler);
-	}
- 	return files;
+	    $files = null;
+ 	    foreach($dir as $d){
+	        $dirname = array_pop(explode(DIRECTORY_SEPARATOR,$d));
+	        $handler = opendir($d);
+   	        while(($filename = readdir($handler))!== false){
+	          // must !== in case filename =='0'
+	          if($filename != "." && $filename != ".."){
+	            $files[] = $dirname.DIRECTORY_SEPARATOR.$filename;
+           	    }
+	        }
+   	        closedir($handler);
+	    }
+ 	    return $files;
     }
 
     /**
