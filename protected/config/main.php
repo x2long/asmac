@@ -40,6 +40,7 @@ return array(
 		'authManager'=>$components_config['authManager'],
 		'smarty' => $components_config['smarty'],
 		'phpExcelFactory' => $components_config['phpExcelFactory'],
+        'phpExlWriter' => $components_config['phpExlWriter'],
 		'errorHandler'=>$components_config['errorHandler'],
 		'log'=>$components_config['log'],
 		//'messenger' => $components_config['messenger'],

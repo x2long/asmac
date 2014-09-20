@@ -36,6 +36,10 @@ return array(
             'class'=>'lib.extensions.CPhpExcelFactory',
         ),
 
+        'phpExlWriter'=>array(
+            'class'=>'lib.extensions.PhpExlWrite',
+        ),
+
         'errorHandler'=>array(
             // use 'site/error' action to display errors
             'errorAction'=>'/',
@@ -81,7 +85,7 @@ return array(
                 ),
                 array(
                     'class'=>'CFileLogRoute',
-                    'levels'=>'profile,trace,info',     //级别为trace时跟踪数据库访问细节
+                    'levels'=>'profile,info',     //级别为trace时跟踪数据库访问细节
                     'categories'=>'system.db.*', //只显示关于数据库信息,包括数据库连接,数据库执行语句
                     'logPath' => $EBUPT_WEB_BASE_DIR.'/log',
                     'logFile' => 'asmac.sql.log',

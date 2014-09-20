@@ -157,6 +157,7 @@ class AsmacConstants{
                 //index 的使用,暂时不需要
                 //$criteria->index ="index";
                 $records = $model->findAll($criteria,"");
+                Yii::log(count($records), 'info');
             }else{
                 $records = $model->count($criteria,"");
             }
